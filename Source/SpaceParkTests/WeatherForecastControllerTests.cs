@@ -7,6 +7,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
+
+//https://timdeschryver.dev/blog/how-to-test-your-csharp-web-api
+
 namespace SpaceParkTests
 {
     public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory<SpacePark_API.Startup>>
@@ -21,14 +24,14 @@ namespace SpaceParkTests
         [Fact]
         public async Task Get_Should_Retrieve_Forecast()
         {
-            var response = await Client.GetAsync("/weatherforecast");
+            var response = await Client.GetAsync("/weatherforecast/");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
         public async Task Get_Should_Retrieve_()
         {
-            var response = await Client.GetAsync("/weatherforecast");
+            var response = await Client.GetAsync("/weatherforecast/");
 
             var forecast = JsonConvert.DeserializeObject<WeatherForecast[]>(await response.Content.ReadAsStringAsync());
             Assert.Equal(5, forecast.Length);
