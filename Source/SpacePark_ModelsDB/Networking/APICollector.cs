@@ -21,13 +21,13 @@ namespace SpacePark_ModelsDB.Networking
 
         #region Overloads
 
-        public static Person ParseUser(Uri url)
+        public static Person ParsePerson(Uri url)
         {
             var jsonResult = "";
             using (var httpclient = new HttpClient())
             {
                 httpclient.BaseAddress = url;
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "Anything");
+                httpclient.DefaultRequestHeaders.Add("Person-Agent", "Anything");
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var httpresponse = httpclient.GetAsync(url).Result;
                 httpresponse.EnsureSuccessStatusCode();
@@ -36,24 +36,24 @@ namespace SpacePark_ModelsDB.Networking
 
             if (!string.IsNullOrWhiteSpace(jsonResult))
             {
-                var parsedUser = JsonConvert.DeserializeObject<Person>(jsonResult);
+                var parsedPerson = JsonConvert.DeserializeObject<Person>(jsonResult);
                 var resultobject = JsonConvert.DeserializeObject<JObject>(jsonResult);
                 foreach (var property in resultobject.Properties())
                     if (property.Name == "homeworld")
-                        parsedUser.Homeplanet = ReturnHomeplanet(property.Value.ToString());
-                return parsedUser;
+                        parsedPerson.Homeplanet = ReturnHomeplanet(property.Value.ToString());
+                return parsedPerson;
             }
 
             throw new Exception("Parse was empty; Is the URL in correct format?");
         }
 
-        public static Person ParseUserAsync(Uri url) //This contains a threadstart for the private corresponding method
+        public static Person ParsePersonAsync(Uri url) //This contains a threadstart for the private corresponding method
         {
-            var user = new Person();
-            var thread = new Thread(() => { user = ParseUser(url); });
+            var person = new Person();
+            var thread = new Thread(() => { person = ParsePerson(url); });
             thread.Start();
             thread.Join(); //By doing join it will wait for the method to finish
-            return user;
+            return person;
         }
 
         public static SpaceShip ParseShipAsync(string model) //This contains a threadstart for the private corresponding method
@@ -71,7 +71,7 @@ namespace SpacePark_ModelsDB.Networking
             using (var httpclient = new HttpClient())
             {
                 httpclient.BaseAddress = url;
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "Anything");
+                httpclient.DefaultRequestHeaders.Add("Person-Agent", "Anything");
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var httpresponse = httpclient.GetAsync(url).Result;
                 httpresponse.EnsureSuccessStatusCode();
@@ -93,20 +93,20 @@ namespace SpacePark_ModelsDB.Networking
 
         #endregion
 
-        public static Person ParseUser(string name)
+        public static Person ParsePerson(string name)
         {
-            var foundUser = false;
-            var user = new Person();
+            var foundPerson = false;
+            var person = new Person();
             for (var i = 1; i <= 9; i++)
-                if (!foundUser)
+                if (!foundPerson)
                 {
-                    var tempUsers =
-                        ReturnUsersFromList("https://swapi.dev/api/people/?page=" + i);
-                    foreach (var s in tempUsers)
+                    var tempPersons =
+                        ReturnPersonsFromList("https://swapi.dev/api/people/?page=" + i);
+                    foreach (var s in tempPersons)
                     {
                         if (s.Name.ToLower() != name.ToLower()) continue;
-                        foundUser = true;
-                        user = s;
+                        foundPerson = true;
+                        person = s;
                         break;
                     }
                 }
@@ -115,18 +115,18 @@ namespace SpacePark_ModelsDB.Networking
                     break;
                 }
 
-            if (foundUser)
-                return user;
+            if (foundPerson)
+                return person;
             else return null;
         }
 
-        public static Person ParseUserAsync(string name) //This contains a threadstart for the private corresponding method
+        public static Person ParsePersonAsync(string name) //This contains a threadstart for the private corresponding method
         {
-            var user = new Person();
-            var thread = new Thread(() => { user = ParseUser(name); });
+            var p = new Person();
+            var thread = new Thread(() => { p = ParsePerson(name); });
             thread.Start();
             thread.Join(); //By doing join it will wait for the method to finish
-            return user;
+            return p;
         }
 
         public static SpaceShip ParseShip(string model)
@@ -192,7 +192,7 @@ namespace SpacePark_ModelsDB.Networking
             using (var httpclient = new HttpClient())
             {
                 httpclient.BaseAddress = new Uri(url);
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "Anything");
+                httpclient.DefaultRequestHeaders.Add("Person-Agent", "Anything");
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var httpresponse = httpclient.GetAsync(url).Result;
                 httpresponse.EnsureSuccessStatusCode();
@@ -216,7 +216,7 @@ namespace SpacePark_ModelsDB.Networking
             using (var httpclient = new HttpClient())
             {
                 httpclient.BaseAddress = new Uri(url);
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "Anything");
+                httpclient.DefaultRequestHeaders.Add("Person-Agent", "Anything");
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var httpresponse = httpclient.GetAsync(url).Result;
                 httpresponse.EnsureSuccessStatusCode();
@@ -253,14 +253,14 @@ namespace SpacePark_ModelsDB.Networking
             return spaceShips.ToArray();
         }
 
-        private static IEnumerable<Person> ReturnUsersFromList(string url)
+        private static IEnumerable<Person> ReturnPersonsFromList(string url)
         {
-            var users = new List<Person>();
+            var persons = new List<Person>();
             var jsonResult = "";
             using (var httpclient = new HttpClient())
             {
                 httpclient.BaseAddress = new Uri(url);
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "Anything");
+                httpclient.DefaultRequestHeaders.Add("Person-Agent", "Anything");
                 httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var httpresponse = httpclient.GetAsync(url).Result;
                 httpresponse.EnsureSuccessStatusCode();
@@ -274,11 +274,11 @@ namespace SpacePark_ModelsDB.Networking
                     .Children<JObject>();
                 foreach (var result in resultObjects)
                 {
-                    var user = result.ToObject<Person>();
+                    var person = result.ToObject<Person>();
                     foreach (var property in result.Properties())
                         if (property.Name == "homeworld")
-                            user.Homeplanet = ReturnHomeplanet(property.Value.ToString());
-                    users.Add(user);
+                            person.Homeplanet = ReturnHomeplanet(property.Value.ToString());
+                    persons.Add(person);
                 }
             }
             else
@@ -286,7 +286,7 @@ namespace SpacePark_ModelsDB.Networking
                 throw ParseFailedIncorrectUrl(url);
             }
 
-            return users.ToArray();
+            return persons.ToArray();
         }
 
         private static IEnumerable<JToken> AllChildren(JToken json)

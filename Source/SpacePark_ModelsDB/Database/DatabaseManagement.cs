@@ -135,10 +135,10 @@ namespace SpacePark_ModelsDB.Database
 
             #region Overloads
 
-            private bool _Exists(Person inputUser)
+            private bool _Exists(Person inputPerson)
             {
                 var result = false;
-                var thread = new Thread(() => { result = Execution_Exists(inputUser); });
+                var thread = new Thread(() => { result = Execution_Exists(inputPerson); });
                 thread.Start();
                 thread.Join(); //By doing join it will wait for the method to finish
                 return result;
@@ -164,12 +164,12 @@ namespace SpacePark_ModelsDB.Database
                 return receiptList;
             }
 
-            private bool Execution_Exists(Person inputUser)
+            private bool Execution_Exists(Person inputPerson)
             {
                 var result = false;
                 var dbHandler = new StarwarsContext { ConnectionString = ConnectionString };
-                foreach (var user in dbHandler.Persons)
-                    if (user.Name == inputUser.Name)
+                foreach (var p in dbHandler.Persons)
+                    if (p.Name == inputPerson.Name)
                         result = true;
 
                 return result;
@@ -178,18 +178,18 @@ namespace SpacePark_ModelsDB.Database
             #endregion
 
             //Async method. Below will call upon a private corresponding method in another thread.
-            private void _Register(Person inputUser, SpaceShip inputShip, string accountName, string password)
+            private void _Register(Person inputPerson, SpaceShip inputShip, string accountName, string password)
             {
                 var dbHandler = new StarwarsContext { ConnectionString = ConnectionString };
                 var outputAccount = new Account
                 {
                     AccountName = accountName,
                     Password = PasswordHashing.HashPassword(password),
-                    Person = inputUser,
+                    Person = inputPerson,
                     SpaceShip = inputShip
                 };
-                inputUser.Homeplanet = dbHandler.Homeworlds.FirstOrDefault(g => g.Name == inputUser.Homeplanet.Name) ??
-                                       inputUser.Homeplanet;
+                inputPerson.Homeplanet = dbHandler.Homeworlds.FirstOrDefault(g => g.Name == inputPerson.Homeplanet.Name) ??
+                                       inputPerson.Homeplanet;
                 dbHandler.Accounts.Add(outputAccount);
                 dbHandler.SaveChanges();
             }
@@ -265,7 +265,7 @@ namespace SpacePark_ModelsDB.Database
 
             #region Private Methods
 
-            private static (string question, string answer) GetSecurityQuestion(Person inputUser)
+            private static (string question, string answer) GetSecurityQuestion(Person inputPerson)
             {
                 var question = string.Empty;
                 var answer = string.Empty;
@@ -275,19 +275,19 @@ namespace SpacePark_ModelsDB.Database
                 {
                     case 1:
                         question = "What is your hair color?";
-                        answer = inputUser.HairColor;
+                        answer = inputPerson.HairColor;
                         break;
                     case 2:
                         question = "What is your skin color?";
-                        answer = inputUser.SkinColor;
+                        answer = inputPerson.SkinColor;
                         break;
                     case 3:
                         question = "What is your eye color?";
-                        answer = inputUser.EyeColor;
+                        answer = inputPerson.EyeColor;
                         break;
                     case 4:
                         question = "What is your birth year?";
-                        answer = inputUser.BirthYear;
+                        answer = inputPerson.BirthYear;
                         break;
                 }
 
@@ -311,10 +311,10 @@ namespace SpacePark_ModelsDB.Database
                 return am._ValidateLogin(accountName, passwordInput);
             }
 
-            public static void Register(Person inputUser, SpaceShip inputShip, string accountName, string password)
+            public static void Register(Person inputPerson, SpaceShip inputShip, string accountName, string password)
             {
                 var am = new AccountManagement();
-                am._Register(inputUser, inputShip, accountName, password);
+                am._Register(inputPerson, inputShip, accountName, password);
             }
 
             public static void ReRegisterShip(Account account, SpaceShip ship)
@@ -327,14 +327,14 @@ namespace SpacePark_ModelsDB.Database
                 dbHandler.SaveChanges();
             }
 
-            public static Person IdentifyWithQuestion(string username, Func<string, string> getSecurityAnswer)
+            public static Person IdentifyWithQuestion(string name, Func<string, string> getSecurityAnswer)
             {
-                var inputUser = APICollector.ParseUserAsync(username);
-                if (inputUser == null) return null;
+                var inputPerson = APICollector.ParsePersonAsync(name);
+                if (inputPerson == null) return null;
 
-                var (question, answer) = GetSecurityQuestion(inputUser);
+                var (question, answer) = GetSecurityQuestion(inputPerson);
                 var inputAnswer = getSecurityAnswer(question);
-                if (inputAnswer.ToLower() == answer.ToLower()) return inputUser;
+                if (inputAnswer.ToLower() == answer.ToLower()) return inputPerson;
                 return null;
             }
 
@@ -345,10 +345,10 @@ namespace SpacePark_ModelsDB.Database
             }
             
             #region Overloads
-            public static bool Exists(Person user)
+            public static bool Exists(Person person)
             {
                 var am = new AccountManagement();
-                return am._Exists(user);
+                return am._Exists(person);
             }
             #endregion
             

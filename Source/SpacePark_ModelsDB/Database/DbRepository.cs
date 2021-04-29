@@ -21,6 +21,7 @@ namespace SpacePark_ModelsDB.Database
         public IQueryable<Account> Accounts => _db.Accounts;
         public IQueryable<SpaceShip> SpaceShips => _db.SpaceShips;
         public IQueryable<Receipt> Receipts => _db.Receipts;
+        public IQueryable<Homeworld> Homeworlds => _db.Homeworlds;
 
         public void Add<EntityType>(EntityType entity) => _db.Add(entity);
         public void SaveChanges() => _db.SaveChanges();
