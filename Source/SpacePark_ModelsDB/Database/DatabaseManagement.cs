@@ -252,8 +252,8 @@ namespace SpacePark_ModelsDB.Database
             {
                 Account accountHolder = null;
                 var dbHandler = new StarwarsContext { ConnectionString = ConnectionString };
-                foreach (var account in dbHandler.Accounts.Include(a => a.User).Include(a => a.SpaceShip)
-                    .Include(h => h.User.Homeplanet))
+                foreach (var account in dbHandler.Accounts.Include(a => a.Person).Include(a => a.SpaceShip)
+                    .Include(h => h.Person.Homeplanet))
                     if (account.AccountName == accountName && account.Password == passwordInput)
                         accountHolder = account;
                 return accountHolder;

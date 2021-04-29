@@ -10,7 +10,7 @@ namespace SpacePark_ModelsDB.Database
         public DbSet<Person> Persons { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
-        public DbSet<Person.Homeworld> Homeworlds { get; set; }
+        public DbSet<Homeworld> Homeworlds { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
         {

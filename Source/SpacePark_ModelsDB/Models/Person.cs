@@ -2,7 +2,7 @@
 
 namespace SpacePark_ModelsDB.Models
 {
-    public class Person
+    public partial class Person
     {
         public int UserId { get; set; }
         public string Name { get; set; }
@@ -20,21 +20,5 @@ namespace SpacePark_ModelsDB.Models
         public string Gender { get; set; }
         public string Url { get; set; }
         public Homeworld Homeplanet { get; set; }
-
-        public class Homeworld
-        {
-            public int HomeworldID { get; set; }
-            public string Name { get; set; }
-
-            [JsonProperty("Rotation_Period")] public string RotationPeriod { get; set; }
-
-            [JsonProperty("Orbital_Period")] public string OrbitalPeriod { get; set; }
-
-            public string Diameter { get; set; }
-            public string Climate { get; set; }
-            public string Terrain { get; set; }
-            public string Population { get; set; }
-            public string Url { get; set; }
-        }
     }
 }
