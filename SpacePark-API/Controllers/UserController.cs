@@ -25,7 +25,7 @@ namespace SpacePark_API.Controllers
         [HttpGet("{id}")]
         public Person Get(int id)
         {
-            return LocalTestDatabase.Persons.Single(p => p.UserId == id);
+            return LocalTestDatabase.Persons.Single(p => p.Id == id);
         }
     }
 }

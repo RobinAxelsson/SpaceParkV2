@@ -329,7 +329,7 @@ namespace SpacePark_ModelsDB.Database
 
             public static Person IdentifyWithQuestion(string name, Func<string, string> getSecurityAnswer)
             {
-                var inputPerson = APICollector.ParsePersonAsync(name);
+                var inputPerson = APICollector.ParseUserAsync(name);
                 if (inputPerson == null) return null;
 
                 var (question, answer) = GetSecurityQuestion(inputPerson);

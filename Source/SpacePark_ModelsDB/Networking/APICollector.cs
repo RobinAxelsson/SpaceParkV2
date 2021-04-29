@@ -189,7 +189,7 @@ namespace SpacePark_ModelsDB.Networking
 
         #region Private Methods & IEnumerables
 
-        private static Person.Homeworld ReturnHomeplanet(string url)
+        private static Homeworld ReturnHomeplanet(string url)
         {
             var jsonResult = "";
             using (var httpclient = new HttpClient())
@@ -204,7 +204,7 @@ namespace SpacePark_ModelsDB.Networking
 
             if (!string.IsNullOrWhiteSpace(jsonResult))
             {
-                var homeworld = JsonConvert.DeserializeObject<Person.Homeworld>(jsonResult);
+                var homeworld = JsonConvert.DeserializeObject<Homeworld>(jsonResult);
                 return homeworld;
             }
 

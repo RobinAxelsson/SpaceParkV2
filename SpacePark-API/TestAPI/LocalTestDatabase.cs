@@ -21,7 +21,7 @@ namespace SpaceParkTests
         {
             for (var i = 0; i <= Persons.Count - 1; i++)
             {
-                Persons[i].UserId = i;
+                Persons[i].Id = i;
             }
             Persons.CollectionChanged += ListChanged;
             //Fix userID's in list(They'll always
@@ -29,7 +29,7 @@ namespace SpaceParkTests
         private static void ListChanged(object sender, NotifyCollectionChangedEventArgs args) {
             for (var i = 0; i <= Persons.Count - 1; i++)
             {
-                Persons[i].UserId = i;
+                Persons[i].Id = i;
             }
         }
     }
