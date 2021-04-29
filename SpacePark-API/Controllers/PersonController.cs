@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SpacePark_ModelsDB.Models;
+using SpacePark_API.Models;
 using SpacePark_ModelsDB.Networking;
 using SpaceParkTests;
 using SpacePark_ModelsDB.Database;

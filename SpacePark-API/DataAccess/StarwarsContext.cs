@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpacePark_ModelsDB.Models;
+using SpacePark_API.Models;
 
 namespace SpacePark_ModelsDB.Database
 {

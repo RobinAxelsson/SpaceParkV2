@@ -1,5 +1,5 @@
 ﻿using SpacePark_ModelsDB.Database;
-using SpacePark_ModelsDB.Models;
+using SpacePark_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;

@@ -1,4 +1,4 @@
-namespace SpacePark_ModelsDB.Models
+namespace SpacePark_API.Models
 {
     public record Receipt
     {

@@ -1,5 +1,5 @@
 ﻿using SpacePark_ModelsDB.Database;
-using SpacePark_ModelsDB.Models;
+using SpacePark_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;
@@ -18,6 +18,7 @@ namespace SpaceParkTests
         public HttpClient Client { get; }
         public RegisterControllerTests(WebApplicationFactory<SpacePark_API.Startup> fixture)
         {
+            
             _repository = GetInMemoryRepository();
             _controller = new RegisterController(_repository);
             Client = fixture.CreateClient();

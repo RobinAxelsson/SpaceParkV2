@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using SpacePark_ModelsDB.Models;
+using SpacePark_API.Models;
 using SpacePark_ModelsDB.Networking;
 
 namespace SpaceParkTests
