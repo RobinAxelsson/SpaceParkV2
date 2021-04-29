@@ -17,8 +17,8 @@ namespace SpacePark_API.Controllers
 
         [Route("api/[controller]")]
         // GET: api/<UserController>
-        [HttpPost]
-        public string Post(string name)
+        [HttpGet]
+        public string Get(string name)
         {
             var person = APICollector.ParseUser(name);
             if (person == null)

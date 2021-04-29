@@ -51,7 +51,7 @@ namespace SpaceParkTests
         [Fact]
         public async Task IdentifyAgainstSwapi_ExpectOK()
         {
-            var response = await Client.GetAsync("/api/register/yoda/");
+            var response = await Client.GetAsync("/api/register?name=yoda");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
