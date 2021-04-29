@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SpacePark_API.Models;
 
-namespace SpacePark_ModelsDB.Database
+namespace SpacePark_API.DataAccess
 {
     public class StarwarsContext : DbContext
     {

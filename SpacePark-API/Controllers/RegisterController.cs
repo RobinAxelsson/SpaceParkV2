@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SpacePark_ModelsDB.Database;
+using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
-using SpacePark_ModelsDB.Networking;
+using SpacePark_API.Networking;
 using SpaceParkTests;
 using System.Net;
 

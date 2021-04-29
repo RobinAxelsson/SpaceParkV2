@@ -1,4 +1,4 @@
-﻿using SpacePark_ModelsDB.Database;
+﻿using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpacePark_ModelsDB.Database
+namespace SpacePark_API.DataAccess
 {
     public class DbRepository : IStarwarsRepository
     {

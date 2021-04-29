@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SpacePark_ModelsDB.Networking;
+using SpacePark_API.Networking;
 using SpaceParkTests;
 
 namespace SpacePark_API.Controllers

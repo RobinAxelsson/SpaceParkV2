@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SpacePark_ModelsDB.Database;
+using SpacePark_API.DataAccess;
 
 namespace SpacePark_API.Migrations
 {

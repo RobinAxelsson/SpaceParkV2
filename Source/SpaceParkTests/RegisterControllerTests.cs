@@ -1,27 +1,27 @@
-﻿using SpacePark_ModelsDB.Database;
-using SpacePark_API.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;
-using SpacePark_API.Controllers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net;
+using SpacePark_API;
+using SpacePark_API.Controllers;
+using SpacePark_API.DataAccess;
+using SpacePark_API.Models;
 
 namespace SpaceParkTests
 {
-    public class RegisterControllerTests : IClassFixture<WebApplicationFactory<SpacePark_API.Startup>>
+    public class RegisterControllerTests : IClassFixture<MockWebHostFactory<Startup>>
     {
         private RegisterController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public RegisterControllerTests(WebApplicationFactory<SpacePark_API.Startup> fixture)
+        public RegisterControllerTests(MockWebHostFactory<Startup> factory)
         {
-            
-            _repository = GetInMemoryRepository();
+            Client = factory.CreateClient();
+            _repository = GetInMemoryRepository(factory.DbName);
             _controller = new RegisterController(_repository);
-            Client = fixture.CreateClient();
         }
         private void Populate(StarwarsContext context)
         {
@@ -33,10 +33,10 @@ namespace SpaceParkTests
 
             context.SaveChanges();
         }
-        private IStarwarsRepository GetInMemoryRepository()
+        private IStarwarsRepository GetInMemoryRepository(string dbName)
         {
             var options = new DbContextOptionsBuilder<StarwarsContext>()
-                             .UseInMemoryDatabase(databaseName: "MockDB")
+                             .UseInMemoryDatabase(databaseName: dbName)
                              .Options;
 
             var initContext = new StarwarsContext(options);
@@ -54,5 +54,11 @@ namespace SpaceParkTests
             var response = await Client.GetAsync("/api/register?name=yoda");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        //[Fact]
+        //public async Task IdentifyAgainstSwapi_Expect404()
+        //{
+        //    var response = await Client.GetAsync("/api/register?name=yodas");
+        //    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        //}
     }
 }

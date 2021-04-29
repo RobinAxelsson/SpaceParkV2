@@ -1,13 +1,13 @@
 //using Microsoft.EntityFrameworkCore;
 //using SpacePark_API.Models;
-//using SpacePark_ModelsDB.Networking;
+//using SpacePark_API.Networking;
 //using System;
 //using System.Collections.Generic;
 //using System.IO;
 //using System.Linq;
 //using System.Threading;
 
-//namespace SpacePark_ModelsDB.Database
+//namespace SpacePark_API.DataAccess
 //{
 //    public partial class DatabaseManagement
 //    {

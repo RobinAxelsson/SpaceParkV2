@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace SpacePark_ModelsDB.Database
+namespace SpacePark_API.DataAccess
 {
     public partial class DatabaseManagement
     {

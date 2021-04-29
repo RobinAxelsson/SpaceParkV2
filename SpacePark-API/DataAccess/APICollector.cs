@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 
-namespace SpacePark_ModelsDB.Networking
+namespace SpacePark_API.Networking
 {
     public static class APICollector
     {

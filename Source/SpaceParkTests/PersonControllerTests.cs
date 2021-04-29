@@ -1,4 +1,4 @@
-﻿using SpacePark_ModelsDB.Database;
+﻿using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -8,20 +8,20 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net;
+using SpacePark_API;
 
 namespace SpaceParkTests
 {
-    public class PersonControllerTests : IClassFixture<WebApplicationFactory<SpacePark_API.Startup>>
+    public class PersonControllerTests : IClassFixture<MockWebHostFactory<Startup>>
     {
         private PersonController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public PersonControllerTests(WebApplicationFactory<SpacePark_API.Startup> fixture)
+        public PersonControllerTests(MockWebHostFactory<Startup> factory)
         {
-
-            _repository = GetInMemoryRepository();
+            Client = factory.CreateClient();
+            _repository = GetInMemoryRepository(factory.DbName);
             _controller = new PersonController(_repository);
-            Client = fixture.CreateClient();
         }
         private void Populate(StarwarsContext context)
         {
@@ -29,19 +29,19 @@ namespace SpaceParkTests
             var luke = new Person() { Name = "Luke Skywalker" };
             var lsAccount = new Account() { SpaceShip = xWing, Person = luke };
 
-            context.Add(lsAccount);
+            context.Add(luke);
+            //context.Add(lsAccount);
 
             context.SaveChanges();
         }
-        private IStarwarsRepository GetInMemoryRepository()
+        private IStarwarsRepository GetInMemoryRepository(string dbName)
         {
             var options = new DbContextOptionsBuilder<StarwarsContext>()
-                             .UseInMemoryDatabase(databaseName: "MockDB")
+                             .UseInMemoryDatabase(databaseName: dbName)
                              .Options;
 
             var initContext = new StarwarsContext(options);
             initContext.Database.EnsureDeleted();
-
             Populate(initContext);
             var testContext = new StarwarsContext(options);
             var repository = new DbRepository(testContext);
@@ -66,8 +66,8 @@ namespace SpaceParkTests
         public async Task GetFromAPI_ExpectPerson() //from application api
         {
             var response = await Client.GetAsync("/api/person/1/");
-
-            var person = JsonConvert.DeserializeObject<Person>(await response.Content.ReadAsStringAsync());
+            var content = await response.Content.ReadAsStringAsync();
+            var person = JsonConvert.DeserializeObject<Person>(content);
             Assert.Equal("Luke Skywalker", person.Name);
         }
     }
