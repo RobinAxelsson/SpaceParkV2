@@ -12,15 +12,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SpaceParkTests
 {
-    public class StarwarsDBTests
+    public class UserControllerTests
     {
-        private TestController _controller;
+        private UserController _controller;
         private IStarwarsRepository _repository;
 
-        public StarwarsDBTests()
+        public UserControllerTests()
         {
             _repository = GetInMemoryRepository();
-            _controller = new TestController(_repository);
+            _controller = new UserController(_repository);
         }
         private void Populate(StarwarsContext context)
         {
@@ -48,13 +48,12 @@ namespace SpaceParkTests
             return repository;
         }
         [Fact]
-        public void IndexPerson()
+        public void getperson_expectLuke()
         {
-            var result = _controller.Index() as ViewResult;
-            var model = result.Model as IEnumerable<Person>;
+            var result = _controller.Get(1);
+            var model = result as Person;
 
-            Assert.Single(model);
-            Assert.Equal("Luke Skywalker", model.First().Name);
+            Assert.Equal("Luke Skywalker", model.Name);
         }
     }
 }

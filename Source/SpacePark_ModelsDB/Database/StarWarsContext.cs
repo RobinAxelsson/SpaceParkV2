@@ -5,18 +5,11 @@ namespace SpacePark_ModelsDB.Database
 {
     public class StarwarsContext : DbContext
     {
-        public string ConnectionString;
+        public StarwarsContext(DbContextOptions<StarwarsContext> options) : base(options) { }
         public DbSet<SpaceShip> SpaceShips { get; set; }
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Person> People { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Homeworld> Homeworlds { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
-        {
-            //hard code connectionstring in onconfiguring method when migrating
-            ConnectionString = @"Server = 90.229.161.68,52578; Database = StarwarsProjectLive; User Id = adminuser; Password = starwars;";
-            optionsbuilder.UseSqlServer(ConnectionString);
-        }
     }
 }

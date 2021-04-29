@@ -17,7 +17,7 @@ namespace SpacePark_ModelsDB.Database
             _db = db;
         }
 
-        public IQueryable<Person> Books => _db.Persons;
+        public IQueryable<Person> People => _db.People;
         public IQueryable<Account> Accounts => _db.Accounts;
         public IQueryable<SpaceShip> SpaceShips => _db.SpaceShips;
         public IQueryable<Receipt> Receipts => _db.Receipts;

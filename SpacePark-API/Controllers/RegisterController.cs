@@ -3,6 +3,7 @@ using SpacePark_ModelsDB.Database;
 using SpacePark_ModelsDB.Models;
 using SpacePark_ModelsDB.Networking;
 using SpaceParkTests;
+using System.Net;
 
 namespace SpacePark_API.Controllers
 {
@@ -16,12 +17,12 @@ namespace SpacePark_API.Controllers
             var person = APICollector.ParseUser(name);
             if (person == null)
             {
-                return "404 - Could not find user";
+                return HttpStatusCode.NotFound.ToString();
             }
             else
             {
                 LocalTestDatabase.Persons.Add(person);
-                return "200 - Success";
+                return HttpStatusCode.OK.ToString();
             }
             
         }
