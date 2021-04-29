@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using StarWarsApi.Models;
+using SpacePark_ModelsDB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 
-namespace StarWarsApi.Networking
+namespace SpacePark_ModelsDB.Networking
 {
     public static class APICollector
     {
@@ -21,7 +21,7 @@ namespace StarWarsApi.Networking
 
         #region Overloads
 
-        public static User ParseUser(Uri url)
+        public static Person ParseUser(Uri url)
         {
             var jsonResult = "";
             using (var httpclient = new HttpClient())
@@ -36,7 +36,7 @@ namespace StarWarsApi.Networking
 
             if (!string.IsNullOrWhiteSpace(jsonResult))
             {
-                var parsedUser = JsonConvert.DeserializeObject<User>(jsonResult);
+                var parsedUser = JsonConvert.DeserializeObject<Person>(jsonResult);
                 var resultobject = JsonConvert.DeserializeObject<JObject>(jsonResult);
                 foreach (var property in resultobject.Properties())
                     if (property.Name == "homeworld")
@@ -47,9 +47,9 @@ namespace StarWarsApi.Networking
             throw new Exception("Parse was empty; Is the URL in correct format?");
         }
 
-        public static User ParseUserAsync(Uri url) //This contains a threadstart for the private corresponding method
+        public static Person ParseUserAsync(Uri url) //This contains a threadstart for the private corresponding method
         {
-            var user = new User();
+            var user = new Person();
             var thread = new Thread(() => { user = ParseUser(url); });
             thread.Start();
             thread.Join(); //By doing join it will wait for the method to finish
@@ -93,10 +93,10 @@ namespace StarWarsApi.Networking
 
         #endregion
 
-        public static User ParseUser(string name)
+        public static Person ParseUser(string name)
         {
             var foundUser = false;
-            var user = new User();
+            var user = new Person();
             for (var i = 1; i <= 9; i++)
                 if (!foundUser)
                 {
@@ -120,9 +120,9 @@ namespace StarWarsApi.Networking
             else return null;
         }
 
-        public static User ParseUserAsync(string name) //This contains a threadstart for the private corresponding method
+        public static Person ParseUserAsync(string name) //This contains a threadstart for the private corresponding method
         {
-            var user = new User();
+            var user = new Person();
             var thread = new Thread(() => { user = ParseUser(name); });
             thread.Start();
             thread.Join(); //By doing join it will wait for the method to finish
@@ -186,7 +186,7 @@ namespace StarWarsApi.Networking
 
         #region Private Methods & IEnumerables
 
-        private static User.Homeworld ReturnHomeplanet(string url)
+        private static Person.Homeworld ReturnHomeplanet(string url)
         {
             var jsonResult = "";
             using (var httpclient = new HttpClient())
@@ -201,7 +201,7 @@ namespace StarWarsApi.Networking
 
             if (!string.IsNullOrWhiteSpace(jsonResult))
             {
-                var homeworld = JsonConvert.DeserializeObject<User.Homeworld>(jsonResult);
+                var homeworld = JsonConvert.DeserializeObject<Person.Homeworld>(jsonResult);
                 return homeworld;
             }
 
@@ -253,9 +253,9 @@ namespace StarWarsApi.Networking
             return spaceShips.ToArray();
         }
 
-        private static IEnumerable<User> ReturnUsersFromList(string url)
+        private static IEnumerable<Person> ReturnUsersFromList(string url)
         {
-            var users = new List<User>();
+            var users = new List<Person>();
             var jsonResult = "";
             using (var httpclient = new HttpClient())
             {
@@ -274,7 +274,7 @@ namespace StarWarsApi.Networking
                     .Children<JObject>();
                 foreach (var result in resultObjects)
                 {
-                    var user = result.ToObject<User>();
+                    var user = result.ToObject<Person>();
                     foreach (var property in result.Properties())
                         if (property.Name == "homeworld")
                             user.Homeplanet = ReturnHomeplanet(property.Value.ToString());

@@ -1,4 +1,4 @@
-namespace StarWarsApi.Models
+namespace SpacePark_ModelsDB.Models
 {
     public class Receipt
     {

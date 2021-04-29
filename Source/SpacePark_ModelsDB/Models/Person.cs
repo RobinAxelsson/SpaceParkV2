@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace StarWarsApi.Models
+namespace SpacePark_ModelsDB.Models
 {
-    public class User
+    public class Person
     {
         public int UserId { get; set; }
         public string Name { get; set; }

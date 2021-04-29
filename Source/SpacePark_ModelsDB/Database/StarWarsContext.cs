@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StarWarsApi.Models;
+using SpacePark_ModelsDB.Models;
 
-namespace StarWarsApi.Database
+namespace SpacePark_ModelsDB.Database
 {
-    public class StarWarsContext : DbContext
+    public class StarwarsContext : DbContext
     {
         public string ConnectionString;
         public DbSet<SpaceShip> SpaceShips { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Person> Persons { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
-        public DbSet<User.Homeworld> Homeworlds { get; set; }
+        public DbSet<Person.Homeworld> Homeworlds { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
         {
             //hard code connectionstring in onconfiguring method when migrating
-            ConnectionString = @"Server = 90.229.161.68,52578; Database = StarWarsProjectLive; User Id = adminuser; Password = starwars;";
+            ConnectionString = @"Server = 90.229.161.68,52578; Database = StarwarsProjectLive; User Id = adminuser; Password = starwars;";
             optionsbuilder.UseSqlServer(ConnectionString);
         }
     }
