@@ -24,7 +24,6 @@ namespace SpacePark_API.Controllers
                 LocalTestDatabase.Persons.Add(person);
                 return HttpStatusCode.OK.ToString();
             }
-            
         }
     }
 }
