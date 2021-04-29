@@ -11,16 +11,15 @@ using System.Net;
 
 namespace SpaceParkTests
 {
-    public class UserControllerTests : IClassFixture<WebApplicationFactory<SpacePark_API.Startup>>
+    public class RegisterControllerTests : IClassFixture<WebApplicationFactory<SpacePark_API.Startup>>
     {
-        private UserController _controller;
+        private RegisterController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public UserControllerTests(WebApplicationFactory<SpacePark_API.Startup> fixture)
+        public RegisterControllerTests(WebApplicationFactory<SpacePark_API.Startup> fixture)
         {
-
             _repository = GetInMemoryRepository();
-            _controller = new UserController(_repository);
+            _controller = new RegisterController(_repository);
             Client = fixture.CreateClient();
         }
         private void Populate(StarwarsContext context)
@@ -49,26 +48,10 @@ namespace SpaceParkTests
             return repository;
         }
         [Fact]
-        public void GetPersonFromDb_expectLuke()
+        public async Task IdentifyAgainstSwapi_ExpectOK()
         {
-            var result = _controller.Get(1);
-            var model = result as Person;
-
-            Assert.Equal("Luke Skywalker", model.Name);
-        }
-        [Fact]
-        public async Task GetPersonFromAPI_ExpectOK()
-        {
-            var response = await Client.GetAsync("/api/user/1/");
+            var response = await Client.GetAsync("/api/register/yoda/");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        [Fact]
-        public async Task GetFromAPI_ExpectPerson()
-        {
-            var response = await Client.GetAsync("/api/user/1");
-
-            var person = JsonConvert.DeserializeObject<Person>(await response.Content.ReadAsStringAsync());
-            Assert.Equal("Luke Skywalker", person.Name);
         }
     }
 }

@@ -9,6 +9,12 @@ namespace SpacePark_API.Controllers
 {
     public class RegisterController : ControllerBase
     {
+        private readonly IStarwarsRepository _repository;
+        public RegisterController(IStarwarsRepository repository)
+        {
+            _repository = repository;
+        }
+
         [Route("api/[controller]")]
         // GET: api/<UserController>
         [HttpPost]

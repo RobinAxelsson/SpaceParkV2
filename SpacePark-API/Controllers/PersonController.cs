@@ -14,11 +14,11 @@ namespace SpacePark_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class PersonController : ControllerBase
     {
         private readonly IStarwarsRepository _repository;
 
-        public UserController(IStarwarsRepository repository)
+        public PersonController(IStarwarsRepository repository)
         {
             _repository = repository;
         }
