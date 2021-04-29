@@ -2,7 +2,7 @@
 
 namespace SpacePark_ModelsDB.Models
 {
-    public class SpaceShip
+    public record SpaceShip
     {
         public int SpaceShipID { get; set; }
         public string Model { get; set; }

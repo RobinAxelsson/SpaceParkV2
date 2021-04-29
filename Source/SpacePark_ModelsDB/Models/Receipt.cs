@@ -1,6 +1,6 @@
 namespace SpacePark_ModelsDB.Models
 {
-    public class Receipt
+    public record Receipt
     {
         public int ReceiptID { get; set; }
         public Account Account { get; set; }

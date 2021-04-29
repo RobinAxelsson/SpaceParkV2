@@ -2,7 +2,7 @@
 
 namespace SpacePark_ModelsDB.Models
 {
-    public class Homeworld
+    public record Homeworld
     {
         public int HomeworldID { get; set; }
         public string Name { get; set; }
