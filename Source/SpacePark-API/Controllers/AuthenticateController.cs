@@ -78,7 +78,6 @@ namespace SpacePark_API.Controllers
 
             ApplicationUser user = new ApplicationUser()
             {
-                Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
@@ -99,7 +98,6 @@ namespace SpacePark_API.Controllers
 
             ApplicationUser user = new ApplicationUser()
             {
-                Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
