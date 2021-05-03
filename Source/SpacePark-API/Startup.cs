@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using SpacePark_API.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,13 +30,14 @@ namespace SpacePark_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IStarwarsRepository, DbRepository>();
-
-            //services.AddDbContext<StarwarsContext>(options => new DbContextOptionsBuilder<StarwarsContext>()
-                             //.UseInMemoryDatabase(databaseName: "MockDB"));
-
-            //services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
-            services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
-
+            
+            if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt"))
+                services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt")));
+            else
+                services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
+            
+        //    services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
+            //services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

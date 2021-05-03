@@ -25,4 +25,10 @@
     <ProjectReference Include="..\SpacePark_ModelsDB\SpacePark_ModelsDB.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="connection.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

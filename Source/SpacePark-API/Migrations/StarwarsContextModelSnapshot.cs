@@ -16,7 +16,7 @@ namespace SpacePark_API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "6.0.0-preview.3.21201.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SpacePark_API.Models.Account", b =>
@@ -129,7 +129,7 @@ namespace SpacePark_API.Migrations
 
             modelBuilder.Entity("SpacePark_API.Models.Receipt", b =>
                 {
-                    b.Property<int>("ReceiptID")
+                    b.Property<int>("ReceiptId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -143,14 +143,37 @@ namespace SpacePark_API.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("SpacePortId")
+                        .HasColumnType("int");
+
                     b.Property<string>("StartTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ReceiptID");
+                    b.HasKey("ReceiptId");
 
                     b.HasIndex("AccountID");
 
+                    b.HasIndex("SpacePortId");
+
                     b.ToTable("Receipts");
+                });
+
+            modelBuilder.Entity("SpacePark_API.Models.SpacePort", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParkingSpots")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SpacePorts");
                 });
 
             modelBuilder.Entity("SpacePark_API.Models.SpaceShip", b =>
@@ -213,7 +236,13 @@ namespace SpacePark_API.Migrations
                         .WithMany()
                         .HasForeignKey("AccountID");
 
+                    b.HasOne("SpacePark_API.Models.SpacePort", "SpacePort")
+                        .WithMany()
+                        .HasForeignKey("SpacePortId");
+
                     b.Navigation("Account");
+
+                    b.Navigation("SpacePort");
                 });
 #pragma warning restore 612, 618
         }

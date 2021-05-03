@@ -11,5 +11,6 @@ namespace SpacePark_API.DataAccess
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Homeworld> Homeworlds { get; set; }
+        public DbSet<SpacePort> SpacePorts { get; set; }
     }
 }

@@ -27,7 +27,8 @@ namespace SpacePark_API.Controllers
             }
             else
             {
-                LocalTestDatabase.Persons.Add(person);
+                _repository.Add(person);
+                _repository.SaveChanges();
                 return HttpStatusCode.OK.ToString();
             }
         }
