@@ -35,9 +35,6 @@ namespace SpacePark_API
                 services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt")));
             else
                 services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
-            
-        //    services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
-            //services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SQLConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
