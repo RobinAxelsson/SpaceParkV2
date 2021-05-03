@@ -33,7 +33,8 @@ namespace SpacePark_API
             //services.AddDbContext<StarwarsContext>(options => new DbContextOptionsBuilder<StarwarsContext>()
                              //.UseInMemoryDatabase(databaseName: "MockDB"));
 
-            services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+            //services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+            services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
