@@ -44,11 +44,11 @@ namespace SpacePark_API
             services.AddControllers();
 
             // For Entity Framework  
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
+            services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AuthConnection")));
 
             // For Identity  
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
             // Adding Authentication  
