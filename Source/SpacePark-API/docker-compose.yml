@@ -1,4 +1,4 @@
-﻿version: "3.8"
+﻿version: "3"
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2019-CU10-ubuntu-20.04
@@ -8,5 +8,5 @@ services:
       - "41433:1433"
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "verystrong!pass321"
+      SA_PASSWORD: "StarWars123!"
       MSSQL_PID: Express
