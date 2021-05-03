@@ -1,0 +1,11 @@
+- As a ***Visitor*** I want to be able to :
+    - Identify myself as a star war's person
+    - Register an account with an spaceship
+    - Register parking at an specific spaceport
+    - Get receipt
+    - Get all receipts on account
+
+- As an ***Administrator*** I want to be able to :
+    - Add new spaceports
+    - Remove spaceports
+    - Change spaceport price 
