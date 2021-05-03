@@ -14,14 +14,14 @@ namespace SpaceParkTests
 {
     public class RegisterControllerTests : IClassFixture<MockWebHostFactory<Startup>>
     {
-        private RegisterController _controller;
+        private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
         public RegisterControllerTests(MockWebHostFactory<Startup> factory)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new RegisterController(_repository);
+            _controller = new AccountController(_repository);
         }
         private void Populate(StarwarsContext context)
         {

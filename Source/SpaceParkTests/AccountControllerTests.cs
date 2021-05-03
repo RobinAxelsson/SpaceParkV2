@@ -1,4 +1,5 @@
-﻿using SpacePark_API.DataAccess;
+﻿using System.Linq;
+using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -9,27 +10,28 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net;
 using SpacePark_API;
+using SpacePark_API.Networking;
 
 namespace SpaceParkTests
 {
-    public class PersonControllerTests : IClassFixture<MockWebHostFactory<Startup>>
+    public class AccountControllerTests : IClassFixture<MockWebHostFactory<Startup>>
     {
-        private PersonController _controller;
+        private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public PersonControllerTests(MockWebHostFactory<Startup> factory)
+        public AccountControllerTests(MockWebHostFactory<Startup> factory)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new PersonController(_repository);
+            _controller = new AccountController(_repository);
         }
         private void Populate(StarwarsContext context)
         {
             var xWing = new SpaceShip { Model = "X-Wing" };
             var luke = new Person() { Name = "Luke Skywalker" };
-            var lsAccount = new Account() { SpaceShip = xWing, Person = luke };
+            var lsAccount = new Account() { SpaceShip = xWing, Person = luke, AccountName = "LuckyLuke" };
 
-            context.Add(luke);
+            context.Add(lsAccount);
             //context.Add(lsAccount);
 
             context.SaveChanges();
@@ -51,24 +53,15 @@ namespace SpaceParkTests
         [Fact]
         public void GetPersonFromDb_expectLuke() //from database
         {
-            var result = _controller.Get(1);
-            var model = result as Person;
 
+            var model = _repository.People.Single(p => p.Name == "Luke Skywalker");
             Assert.Equal("Luke Skywalker", model.Name);
         }
         [Fact]
-        public async Task GetPersonFromAPI_ExpectOK() //from application api
+        public void GetAccountFromDb_expectLuke()
         {
-            var response = await Client.GetAsync("/api/person/1/");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        [Fact]
-        public async Task GetFromAPI_ExpectPerson() //from application api
-        {
-            var response = await Client.GetAsync("/api/person/1/");
-            var content = await response.Content.ReadAsStringAsync();
-            var person = JsonConvert.DeserializeObject<Person>(content);
-            Assert.Equal("Luke Skywalker", person.Name);
+            var model = _repository.Accounts.Single(p => p.AccountName == "LuckyLuke");
+            Assert.Equal("LuckyLuke", model.AccountName);
         }
     }
 }

@@ -171,6 +171,9 @@ namespace SpacePark_API.Migrations
                     b.Property<int>("ParkingSpots")
                         .HasColumnType("int");
 
+                    b.Property<double>("PriceMultiplier")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.ToTable("SpacePorts");
