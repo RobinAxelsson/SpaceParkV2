@@ -20,11 +20,11 @@ namespace SpaceParkTests
         private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public AccountControllerTests(MockWebHostFactory<Startup> factory, IConfiguration configuration)
+        public AccountControllerTests(MockWebHostFactory<Startup> factory)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new AccountController(_repository, configuration);
+            _controller = new AccountController(_repository, factory.Configuration);
         }
         private void Populate(StarwarsContext context)
         {
@@ -55,13 +55,13 @@ namespace SpaceParkTests
         public void GetPersonFromDb_expectLuke() //from database
         {
 
-            var model = _repository.People.Single(p => p.Name == "Luke Skywalker");
+            var model = _repository.People.FirstOrDefault(p => p.Name == "Luke Skywalker");
             Assert.Equal("Luke Skywalker", model.Name);
         }
         [Fact]
         public void GetAccountFromDb_expectLuke()
         {
-            var model = _repository.Accounts.Single(p => p.AccountName == "LuckyLuke");
+            var model = _repository.Accounts.FirstOrDefault(p => p.AccountName == "LuckyLuke");
             Assert.Equal("LuckyLuke", model.AccountName);
         }
     }

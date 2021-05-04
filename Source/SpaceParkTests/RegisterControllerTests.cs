@@ -18,11 +18,11 @@ namespace SpaceParkTests
         private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public RegisterControllerTests(MockWebHostFactory<Startup> factory, IConfiguration configuration)
+        public RegisterControllerTests(MockWebHostFactory<Startup> factory)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new AccountController(_repository, configuration);
+            _controller = new AccountController(_repository, factory.Configuration);
         }
         private void Populate(StarwarsContext context)
         {
@@ -49,12 +49,12 @@ namespace SpaceParkTests
 
             return repository;
         }
-        [Fact]
-        public async Task IdentifyAgainstSwapi_ExpectOK()
-        {
-            var response = await Client.GetAsync("/api/register?name=yoda");
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
+        //[Fact]
+        //public async Task IdentifyAgainstSwapi_ExpectOK()
+        //{
+        //    var response = await Client.GetAsync("/api/register?name=yoda");
+        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        //}
         //[Fact]
         //public async Task IdentifyAgainstSwapi_Expect404()
         //{
