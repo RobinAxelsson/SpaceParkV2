@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SpacePark_API.Authentication;
 using SpacePark_API.DataAccess;
+using SpacePark_API.Models;
 using SpacePark_API.Networking;
 
 namespace SpacePark_API.Controllers
@@ -17,18 +21,30 @@ namespace SpacePark_API.Controllers
         {
             _repository = repository;
         }
-        [HttpGet]
+        [Authorize]
+        [HttpPost]
         [Route("api/[controller]/Park")]
-        public string Get(int SpacePortID, int accountID, double minutes)
+        public IActionResult Post([FromBody] ParkingModelId model)
         {
-            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == SpacePortID);
-            
-            var account = _repository.Accounts.Where(a => a.AccountID == accountID)
-                .Include(ss => ss.SpaceShip).Include(p => p.Person).Single();
-            
-            if (spacePort == null || account == null)
-                return HttpStatusCode.NotFound.ToString();
-            return spacePort.Park(account, minutes, _repository);
+            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == model.SpacePortId);
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer: ", "");
+            var account = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).Single()
+                .Account;
+            if (account == null || spacePort == null)
+                return NotFound();
+            var price = spacePort.CalculatePrice(account.SpaceShip, model.Minutes);
+            var receipt = new Receipt
+            {
+                Price = price,
+                StartTime = DateTime.Now.ToString("d"),
+                EndTime = DateTime.Now.AddMinutes(model.Minutes).ToString("d"),
+                SpacePort = spacePort,
+                Account = account
+            };
+            _repository.Add(receipt);
+            _repository.SaveChanges();
+            return Ok(receipt);
         }
         [HttpGet]
         [Route("api/[controller]/Price")]

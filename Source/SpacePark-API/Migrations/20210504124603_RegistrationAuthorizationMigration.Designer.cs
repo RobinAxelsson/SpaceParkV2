@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpacePark_API.DataAccess;
 
 namespace SpacePark_API.Migrations
 {
     [DbContext(typeof(StarwarsContext))]
-    partial class StarwarsContextModelSnapshot : ModelSnapshot
+    [Migration("20210504124603_RegistrationAuthorizationMigration")]
+    partial class RegistrationAuthorizationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,24 +211,6 @@ namespace SpacePark_API.Migrations
                     b.ToTable("SpaceShips");
                 });
 
-            modelBuilder.Entity("SpacePark_API.Models.UserToken", b =>
-                {
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("AccountID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Token");
-
-                    b.HasIndex("AccountID");
-
-                    b.ToTable("UserTokens");
-                });
-
             modelBuilder.Entity("SpacePark_API.Models.Account", b =>
                 {
                     b.HasOne("SpacePark_API.Models.Person", "Person")
@@ -264,15 +248,6 @@ namespace SpacePark_API.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("SpacePort");
-                });
-
-            modelBuilder.Entity("SpacePark_API.Models.UserToken", b =>
-                {
-                    b.HasOne("SpacePark_API.Models.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountID");
-
-                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }

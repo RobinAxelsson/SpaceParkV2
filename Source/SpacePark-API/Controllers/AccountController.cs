@@ -30,9 +30,8 @@ namespace SpacePark_API.Controllers
         public IActionResult Register([FromBody] RegisterModel model)
         {
             var person = APICollector.ParseUser(model.Name);
-            //var ship = APICollector.ParseShip(model.SpaceShipModel);
-            //if (person == null || ship == null)
-            if (person == null)
+            var ship = APICollector.ParseShip(model.SpaceShipModel);
+            if (person == null || ship == null)
             {
                 return NotFound();
             }
@@ -40,14 +39,14 @@ namespace SpacePark_API.Controllers
             {
                 return Forbid();
             }
-            //ship = _repository.SpaceShips.FirstOrDefault(g => g.Model == ship.Model) ??
-                   //ship;
+            ship = _repository.SpaceShips.FirstOrDefault(g => g.Model == ship.Model) ??
+                   ship;
             var account = new Account
             {
                 AccountName = model.AccountName,
                 Password = model.Password, //TODO add password hashing
                 Person = person,
-                //SpaceShip = ship
+                SpaceShip = ship
             };
             person.Homeplanet = _repository.Homeworlds.FirstOrDefault(g => g.Name == person.Homeplanet.Name) ??
                                 person.Homeplanet;

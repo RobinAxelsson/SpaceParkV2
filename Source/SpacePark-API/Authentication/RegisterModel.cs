@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SpacePark_API.Models;
 
 namespace SpacePark_API.Authentication
 {
@@ -15,6 +16,9 @@ namespace SpacePark_API.Authentication
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+        
+        [Required(ErrorMessage = "Spaceship is required")]
+        public string SpaceShipModel { get; set; }
 
     }
 }
