@@ -27,7 +27,7 @@ namespace SpacePark_API.Controllers
         public IActionResult Post([FromBody] ParkingModelId model)
         {
             var spacePort = _repository.SpacePorts.Single(sp => sp.Id == model.SpacePortId);
-            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer: ", "");
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
             var account = _repository.UserTokens.Where(a => a.Token == token)
                 .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).Single()
                 .Account;
