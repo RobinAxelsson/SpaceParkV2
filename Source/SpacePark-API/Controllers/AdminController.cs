@@ -13,24 +13,30 @@ namespace SpacePark_API.Controllers
         {
             _repository = repository;
         }
-        // GET: api/<UserController>
-        [HttpGet]
-        [Route("api/[controller]/AddSpacePort")]
-        public string Get(string Name, int ParkingSpots, double PriceMultiplier)
+        public class AddSpacePortModel
         {
-            var port = new SpacePort(Name, ParkingSpots, PriceMultiplier);
-       //     if (_repository.SpacePorts.Single(p => p.Name == Name) == null)
-         //   {
+            public string Name { get; set; }
+            public int ParkingSpots { get; set; }
+            public int PriceMultiplier { get; set; }
+        }
+
+        [HttpPost]
+        [Route("api/[controller]/AddSpacePort")]
+        public IActionResult Get([FromBody] AddSpacePortModel model)
+        {
+            
+            if (_repository.SpacePorts.Count() == 0 || _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
+            {
+                var port = new SpacePort(model.Name, model.ParkingSpots, model.PriceMultiplier);
                 _repository.Add(port);
                 _repository.SaveChanges();
-                return HttpStatusCode.OK.ToString();
-          //  }
-            
-         //   else
-        // //   {
-        //        return HttpStatusCode.Forbidden.ToString();
-        //    }
-         
+                //TODO choose what properties to send! Security...
+                return Ok(port);
+            }
+
+            else
+                return Forbid();
         }
+
     }
 }

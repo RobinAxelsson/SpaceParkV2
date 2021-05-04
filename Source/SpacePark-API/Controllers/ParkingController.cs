@@ -44,6 +44,8 @@ namespace SpacePark_API.Controllers
             };
             _repository.Add(receipt);
             _repository.SaveChanges();
+
+            //TODO not send all information in receipt!
             return Ok(receipt);
         }
         [HttpGet]
