@@ -74,9 +74,20 @@ namespace SpacePark_API.Controllers
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                     );
 
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var userToken = new UserToken()
+                {
+                    Account = account,
+                    ExpiryDate = token.ValidTo,
+                    Token = tokenString
+                };
+
+                _repository.Add(userToken);
+                _repository.SaveChanges();
+
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    token = tokenString,
                     expiration = token.ValidTo
                 });
             }
