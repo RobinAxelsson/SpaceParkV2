@@ -45,8 +45,13 @@ namespace SpacePark_API.Controllers
             _repository.Add(receipt);
             _repository.SaveChanges();
 
-            //TODO not send all information in receipt!
-            return Ok(receipt);
+            return Ok(new { 
+                StartTime = receipt.StartTime,
+                EndTime = receipt.EndTime,
+                Price = receipt.Price,
+                SpacePort = receipt.SpacePort.Name,
+                PurchasedBy = account.Person.Name
+            });
         }
         [HttpGet]
         [Route("api/[controller]/Price")]
