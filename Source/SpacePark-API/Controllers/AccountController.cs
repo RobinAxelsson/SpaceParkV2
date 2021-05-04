@@ -53,7 +53,7 @@ namespace SpacePark_API.Controllers
             _repository.Add(account);
             _repository.SaveChanges();
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
         [HttpPost]
         [Route("api/[controller]/login")]

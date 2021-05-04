@@ -30,8 +30,12 @@ namespace SpacePark_API.Controllers
                 var port = new SpacePort(model.Name, model.ParkingSpots, model.PriceMultiplier);
                 _repository.Add(port);
                 _repository.SaveChanges();
-                //TODO choose what properties to send! Security...
-                return Ok(port);
+
+                return Ok(new {
+                    Name = port.Name, 
+                    ParkingSpots = model.ParkingSpots,
+                    PriceMultiplier = model.PriceMultiplier
+                });
             }
 
             else
