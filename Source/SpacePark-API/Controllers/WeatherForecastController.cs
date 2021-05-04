@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace SpacePark_API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
