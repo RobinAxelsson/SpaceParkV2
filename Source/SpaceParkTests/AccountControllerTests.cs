@@ -15,16 +15,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace SpaceParkTests
 {
-    public class AccountControllerTests : IClassFixture<MockWebHostFactory<Startup>>
+    public class AccountControllerTests : IClassFixture<TestHost<Startup>>
     {
         private AccountController _controller;
         private IStarwarsRepository _repository;
+        private TestHost<Startup> _testHost;
         public HttpClient Client { get; }
-        public AccountControllerTests(MockWebHostFactory<Startup> factory)
+        public AccountControllerTests(TestHost<Startup> fakeHost)
         {
-            Client = factory.CreateClient();
-            _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new AccountController(_repository, factory.Configuration);
+            _testHost = fakeHost;
+            Client = fakeHost.CreateClient();
+            _repository = GetInMemoryRepository(fakeHost.DbName);
+            _controller = new AccountController(_repository, fakeHost.Configuration);
         }
         private void Populate(StarwarsContext context)
         {
@@ -39,16 +41,20 @@ namespace SpaceParkTests
         }
         private IStarwarsRepository GetInMemoryRepository(string dbName)
         {
-            var options = new DbContextOptionsBuilder<StarwarsContext>()
-                             .UseInMemoryDatabase(databaseName: dbName)
-                             .Options;
+            //var options = new DbContextOptionsBuilder<StarwarsContext>()
+            //                 .UseInMemoryDatabase(databaseName: dbName)
+            //                 .Options;
 
-            var initContext = new StarwarsContext(options);
-            initContext.Database.EnsureDeleted();
-            Populate(initContext);
-            var testContext = new StarwarsContext(options);
-            var repository = new DbRepository(testContext);
+            //var initContext = new StarwarsContext(options);
+            //initContext.Database.EnsureDeleted();
+            //Populate(initContext);
 
+            //var testContext = new StarwarsContext(options);
+            //var repository = new DbRepository(testContext);
+
+            //_testHost.EnsureDbDeleted();
+            //Populate(_testHost.DbContext);
+            var repository = new DbRepository(_testHost.DbContext);
             return repository;
         }
         [Fact]

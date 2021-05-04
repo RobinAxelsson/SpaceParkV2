@@ -13,12 +13,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace SpaceParkTests
 {
-    public class RegisterControllerTests : IClassFixture<MockWebHostFactory<Startup>>
+    public class RegisterControllerTests : IClassFixture<TestHost<Startup>>
     {
         private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public RegisterControllerTests(MockWebHostFactory<Startup> factory)
+        public RegisterControllerTests(TestHost<Startup> factory)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
