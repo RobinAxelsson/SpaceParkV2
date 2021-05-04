@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Net;
 using SpacePark_API;
 using SpacePark_API.Networking;
+using Microsoft.Extensions.Configuration;
 
 namespace SpaceParkTests
 {
@@ -19,11 +20,11 @@ namespace SpaceParkTests
         private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public AccountControllerTests(MockWebHostFactory<Startup> factory)
+        public AccountControllerTests(MockWebHostFactory<Startup> factory, IConfiguration configuration)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new AccountController(_repository);
+            _controller = new AccountController(_repository, configuration);
         }
         private void Populate(StarwarsContext context)
         {

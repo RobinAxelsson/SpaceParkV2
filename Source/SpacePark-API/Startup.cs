@@ -39,7 +39,7 @@ namespace SpacePark_API
             if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt"))
                 services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt")));
             else
-                services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
+                services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
 
             services.AddControllers();
 

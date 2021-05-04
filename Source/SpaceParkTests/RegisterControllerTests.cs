@@ -9,6 +9,7 @@ using SpacePark_API;
 using SpacePark_API.Controllers;
 using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace SpaceParkTests
 {
@@ -17,11 +18,11 @@ namespace SpaceParkTests
         private AccountController _controller;
         private IStarwarsRepository _repository;
         public HttpClient Client { get; }
-        public RegisterControllerTests(MockWebHostFactory<Startup> factory)
+        public RegisterControllerTests(MockWebHostFactory<Startup> factory, IConfiguration configuration)
         {
             Client = factory.CreateClient();
             _repository = GetInMemoryRepository(factory.DbName);
-            _controller = new AccountController(_repository);
+            _controller = new AccountController(_repository, configuration);
         }
         private void Populate(StarwarsContext context)
         {

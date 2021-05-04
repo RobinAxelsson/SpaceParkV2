@@ -25,32 +25,32 @@ namespace SpacePark_API.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
-            //var user = await userManager.FindByNameAsync(model.Username);
-            //add own model
-            //if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
-                if(true)
-            {
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+        //[HttpPost]
+        //[Route("login")]
+        //public async Task<IActionResult> Login([FromBody] LoginModel model)
+        //{
+        //    //var user = await userManager.FindByNameAsync(model.Username);
+        //    //add own model
+        //    //if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+        //        if(true)
+        //    {
+        //        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
+        //        var token = new JwtSecurityToken(
+        //            issuer: _configuration["JWT:ValidIssuer"],
+        //            audience: _configuration["JWT:ValidAudience"],
+        //            expires: DateTime.Now.AddHours(3),
+        //            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        //            );
 
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
-            }
-            return Unauthorized();
-        }
+        //        return Ok(new
+        //        {
+        //            token = new JwtSecurityTokenHandler().WriteToken(token),
+        //            expiration = token.ValidTo
+        //        });
+        //    }
+        //    return Unauthorized();
+        //}
 
         //[HttpPost]
         //[Route("register")]
