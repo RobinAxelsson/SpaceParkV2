@@ -8,9 +8,6 @@ namespace SpacePark_API.Authentication
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
-        //[Required(ErrorMessage = "Spaceship model is required")]
-        //public string SpaceShipModel { get; set; }
-
         [Required(ErrorMessage = "Account name is required")]
         public string AccountName { get; set; }
 
