@@ -19,16 +19,17 @@ namespace SpacePark_API.Controllers
         public string Get(string Name, int ParkingSpots, double PriceMultiplier)
         {
             var port = new SpacePort(Name, ParkingSpots, PriceMultiplier);
-            if (_repository.SpacePorts.Single(p => p.Name == Name) == null)
-            {
+       //     if (_repository.SpacePorts.Single(p => p.Name == Name) == null)
+         //   {
                 _repository.Add(port);
                 _repository.SaveChanges();
                 return HttpStatusCode.OK.ToString();
-            }
-            else
-            {
-                return HttpStatusCode.Forbidden.ToString();
-            }
+          //  }
+            
+         //   else
+        // //   {
+        //        return HttpStatusCode.Forbidden.ToString();
+        //    }
          
         }
     }
