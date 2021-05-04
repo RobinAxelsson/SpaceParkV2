@@ -59,7 +59,7 @@ namespace SpacePark_API.Controllers
         [Route("api/[controller]/login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
-            var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
+                var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
             if (account == null) return Unauthorized();
 
             if (account.Password == model.Password && account.AccountName == model.Username)

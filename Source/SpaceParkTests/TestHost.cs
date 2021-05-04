@@ -16,11 +16,12 @@ using System.Text;
 
 namespace SpaceParkTests
 {
-    public class MockWebHostFactory<TStartup>
+    public class TestHost<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
     {
         public readonly string DbName = "MockDB";
         public IConfiguration Configuration { get; private set; }
+        public StarwarsContext DbContext { get; private set; }
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
@@ -40,25 +41,15 @@ namespace SpaceParkTests
                 using (var scope = sp.CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<StarwarsContext>();
-                    
+                    var dbContext = scopedServices.GetRequiredService<StarwarsContext>();
+                    DbContext = dbContext;
                     var logger = scopedServices
-                        .GetRequiredService<ILogger<MockWebHostFactory<TStartup>>>();
+                        .GetRequiredService<ILogger<TestHost<TStartup>>>();
 
-                    db.Database.EnsureCreated();
-
-                    try
-                    {
-                        //Utilities.InitializeDbForTests(db);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "An error occurred seeding the " +
-                            "database with test messages. Error: {Message}", ex.Message);
-                    }
+                    dbContext.Database.EnsureCreated();
                 }
             });
         }
-
+        public void EnsureDbDeleted() => DbContext.Database.EnsureDeleted();
     }
 }
