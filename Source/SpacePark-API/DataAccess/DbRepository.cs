@@ -25,8 +25,9 @@ namespace SpacePark_API.DataAccess
         public IQueryable<SpacePort> SpacePorts => _db.SpacePorts;
         public IQueryable<UserToken> UserTokens => _db.UserTokens;
 
-        public void Add<EntityType>(EntityType entity) => _db.Add(entity);
+        public void Add<TEntityType>(TEntityType entity) => _db.Add(entity);
         public void SaveChanges() => _db.SaveChanges();
-        public void Update<EntityType>(EntityType entity) => _db.Update(entity);
+        public void Update<TEntityType>(TEntityType entity) => _db.Update(entity);
+        public void Remove<TEntityType>(TEntityType entity) => _db.Remove(entity);
     }
 }

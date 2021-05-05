@@ -63,42 +63,39 @@ namespace SpacePark_API.Controllers
                 var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
             if (account == null) return Unauthorized();
 
-            if (account.Password == model.Password && account.AccountName == model.Username)
+            if (account.Password != model.Password || account.AccountName != model.Username) return Unauthorized();
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var userToken = new UserToken()
             {
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+                Account = account,
+                ExpiryDate = token.ValidTo,
+                Token = tokenString
+            };
 
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
+            _repository.Add(userToken);
+            _repository.SaveChanges();
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                var userToken = new UserToken()
-                {
-                    Account = account,
-                    ExpiryDate = token.ValidTo,
-                    Token = tokenString
-                };
-
-                _repository.Add(userToken);
-                _repository.SaveChanges();
-
-                return Ok(new
-                {
-                    token = tokenString,
-                    expiration = token.ValidTo
-                });
-            }
-            return Unauthorized();
+            return Ok(new
+            {
+                token = tokenString,
+                expiration = token.ValidTo
+            });
         }
 
         [HttpGet]
         [Route("api/[controller]/Ships")]
-        public List<SpaceShip> Get()
+        public List<SpaceShip> Get(int maxLength = 150)
         {
-            var ships = APICollector.ReturnShips().Where(s => double.Parse(s.ShipLength.Replace(".",",")) <= 150).ToList();
+            var ships = APICollector.ReturnShipsAsync().Where(s => double.Parse(s.ShipLength.Replace(".",",")) <= maxLength).ToList();
             return ships;
         }
     }

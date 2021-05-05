@@ -4,7 +4,7 @@ namespace SpacePark_API.Models
 {
     public record Homeworld
     {
-        public int HomeworldID { get; set; }
+        public int HomeworldId { get; set; }
         public string Name { get; set; }
 
         [JsonProperty("Rotation_Period")] public string RotationPeriod { get; set; }

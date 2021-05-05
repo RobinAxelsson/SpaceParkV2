@@ -2,7 +2,7 @@ namespace SpacePark_API.Models
 {
     public record Account
     {
-        public int AccountID { get; set; }
+        public int AccountId { get; set; }
         public Person Person { get; set; }
         public SpaceShip SpaceShip { get; set; }
         public string AccountName { get; set; }
