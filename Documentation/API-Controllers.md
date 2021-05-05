@@ -9,6 +9,7 @@
 - add spaceport
 - delete space port
 - change space port price*
+- edit spaceport name
 - disable a spaceport
 
 ## SpacePortController
