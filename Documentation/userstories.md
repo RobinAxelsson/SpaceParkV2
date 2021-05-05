@@ -1,11 +1,13 @@
 - As a ***Visitor*** I want to be able to :
-    - Identify myself as a star war's person
-    - Register an account with an spaceship
-    - Register parking at an specific spaceport
-    - Get receipt
-    - Get all receipts on account
+    - Pick my Star Wars identity
+    - Register an based on my Star Wars profile and pick a personal spaceship
+    - Be able to choose which spaceport I wish to park on
+    - Get a receipt after a parking has been paid for
+    - List all of my receipts from my current account.
 
 - As an ***Administrator*** I want to be able to :
     - Add new spaceports
-    - Remove spaceports
-    - Change spaceport price 
+    - Remove existing spaceports
+    - Alter prices of existing spaceports
+    - Edit the name of existing spaceports
+    - Mark a spaceport close thus making it inaccessible without removing it
