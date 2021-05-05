@@ -9,6 +9,7 @@
 - add spaceport
 - delete space port
 - change space port price*
+- disable a spaceport
 
 ## SpacePortController
 - List Space Ports :
