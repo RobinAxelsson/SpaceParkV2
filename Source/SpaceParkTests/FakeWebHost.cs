@@ -8,20 +8,43 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using RestSharp;
 using SpacePark_API;
 using SpacePark_API.DataAccess;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace SpaceParkTests
 {
-    public class TestHost<TStartup>
+    public class FakeWebHost<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
     {
-        public readonly string DbName = "MockDB";
+        
+        private readonly string _dbName = "MockDB";
         public IConfiguration Configuration { get; private set; }
-        public StarwarsContext DbContext { get; private set; }
+
+        //[Obsolete("This property is obsolete. Use NewProperty instead.", true)]
+        public new HttpClient CreateClient()
+        {
+            return base.CreateClient();
+        }
+        private StarwarsContext _inMemoryContext;
+        public StarwarsContext InMemoryContext
+        {
+            get
+            {
+                if (_inMemoryContext == null)
+                {
+                    var options = new DbContextOptionsBuilder<StarwarsContext>()
+                             .UseInMemoryDatabase(databaseName: _dbName)
+                             .Options;
+                    _inMemoryContext = new StarwarsContext(options);
+                }
+                return _inMemoryContext;
+            }
+        }
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
@@ -31,10 +54,10 @@ namespace SpaceParkTests
                         typeof(DbContextOptions<StarwarsContext>));
 
                 services.Remove(descriptor);
-
+                
                 services.AddDbContext<StarwarsContext>(options =>
                 {
-                    options.UseInMemoryDatabase(databaseName: DbName);
+                    options.UseInMemoryDatabase(databaseName: _dbName);
                 });
                 var sp = services.BuildServiceProvider();
 
@@ -42,14 +65,14 @@ namespace SpaceParkTests
                 {
                     var scopedServices = scope.ServiceProvider;
                     var dbContext = scopedServices.GetRequiredService<StarwarsContext>();
-                    DbContext = dbContext;
                     var logger = scopedServices
-                        .GetRequiredService<ILogger<TestHost<TStartup>>>();
+                        .GetRequiredService<ILogger<FakeWebHost<TStartup>>>();
 
                     dbContext.Database.EnsureCreated();
                 }
             });
         }
-        public void EnsureDbDeleted() => DbContext.Database.EnsureDeleted();
+
+        
     }
 }
