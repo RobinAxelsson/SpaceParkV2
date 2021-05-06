@@ -62,7 +62,7 @@ namespace SpaceParkTests
             Assert.Equal("LuckyLuke", model.AccountName);
         }
         [Fact]
-        public void GetDarthVaderFromSwapi_ExpectPerson()
+        public void GetLukeSkywalkerFromSwapi_ExpectPerson()
         {
             var luke = APICollector.ParseUser("LukeSkywalker");
             Assert.True(luke is not null);
@@ -77,14 +77,15 @@ namespace SpaceParkTests
             Assert.IsType<SpaceShip>(spaceShips[0]);
         }
         [Fact]
-        public async Task RegisterDarthVaderWithClient_ExpectSucess()
+        public async Task RegisterC3POWithClient_ExpectSucess()
         {
             var darthVader = new
             {
-                name = "darth vader",
+                name = "c-3po",
                 spaceShipModel = "BTL Y-wing",
-                accountName = "BigBlack",
-                password = "Darth@123"
+                accountName = "RoughMetal33",
+                password = "IHATERUST_DEATHTORUST@123"
+                
             };
             var json = JsonConvert.SerializeObject(darthVader);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -99,7 +100,8 @@ namespace SpaceParkTests
             var darthVader = new Account()
             {
                 AccountName = "BigBlack",
-                Password = "Darth@123"
+                Password = "Darth@123",
+                Role = Role.User
             };
             _repository.Add(darthVader);
             _repository.SaveChanges();
@@ -143,9 +145,8 @@ namespace SpaceParkTests
                 Password = "Darth@123"
             };
 
-            ObjectResult result = _controller.Register(darthVader) as ObjectResult;
-
-            Assert.Equal(200, result.StatusCode);
+            if (_controller.Register(darthVader) is ObjectResult result) 
+                Assert.Equal(200, result.StatusCode);
         }
         [Fact]
         public async Task LoginDarthVaderWithClient_ExpectToken()
@@ -153,7 +154,8 @@ namespace SpaceParkTests
             var darthVader = new Account()
             {
                 AccountName = "BigBlack",
-                Password = "Darth@123"
+                Password = "Darth@123",
+                Role = Role.User
             };
             _repository.Add(darthVader);
             _repository.SaveChanges();
@@ -173,7 +175,7 @@ namespace SpaceParkTests
             var responseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
 
             // Did the response come with an access token?
-            Assert.True(responseValuePairs.ContainsKey("token"));
+            Assert.True(responseValuePairs != null && responseValuePairs.ContainsKey("token"));
 
         }
         [Fact]
@@ -185,6 +187,7 @@ namespace SpaceParkTests
                 AccountName = "BigBlack",
                 Password = "Darth@123",
                 SpaceShip = spaceShip,
+                Role = Role.User,
                 Person = new Person() { Name = "Darth Vader"}
             };
             var spacePort = new SpacePort("PortRoyal", 3, 10.0);
@@ -228,6 +231,87 @@ namespace SpaceParkTests
             string expected = spacePort.CalculatePrice(spaceShip, 10).ToString();
             Assert.True(parkResponseProps.TryGetValue("price", out expected));
 
+        }
+
+        [Fact]
+        public async Task AttemptToAddSpacePortWithoutAdminRights_ExpectFail()
+        {
+            var darthVader = new Account()
+            {
+                AccountName = "BigBlack",
+                Password = "Darth@123",
+                Role = Role.User,
+                Person = new Person() { Name = "Darth Vader"}
+            };
+            _repository.Add(darthVader);
+            _repository.SaveChanges();
+            var loginJson = JsonConvert.SerializeObject(new
+            {
+                username = "BigBlack",
+                password = "Darth@123"
+            });
+            var loginBodyData = new StringContent(loginJson, Encoding.UTF8, "application/json");
+
+            var loginResponse = await Client.PostAsync("/api/Account/Login", loginBodyData).ConfigureAwait(continueOnCapturedContext: false);
+            if (!loginResponse.IsSuccessStatusCode) throw new Exception("Should get 200");
+
+            var loginResponseText = await loginResponse.Content.ReadAsStringAsync();
+            var loginResponseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(loginResponseText);
+
+            var token = loginResponseValuePairs.GetValueOrDefault("token");
+            if (token == null) throw new Exception("Should get token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var newParkJson = JsonConvert.SerializeObject(new
+            {
+                name = "EmoParking",
+                parkingSpots = 1337,
+                priceMultiplier = 69
+            });
+            var parkBodyData = new StringContent(newParkJson, Encoding.UTF8, "application/json");
+
+            var parkResponse = await Client.PostAsync("/api/Admin/AddSpacePort", parkBodyData).ConfigureAwait(continueOnCapturedContext: false);
+            Assert.Equal(HttpStatusCode.Forbidden, parkResponse.StatusCode);
+        }
+        [Fact]
+        public async Task AttemptToAddSpacePortWithAdminRights_ExpectFail()
+        {
+            var c3po = new Account()
+            {
+                AccountName = "rustSlayer33",
+                Password = "NoRust!!@123",
+                Role = Role.Administrator,
+                Person = new Person() { Name = "C-3PO"}
+            };
+            _repository.Add(c3po);
+            _repository.SaveChanges();
+            var loginJson = JsonConvert.SerializeObject(new
+            {
+                username = "rustSlayer33",
+                password = "NoRust!!@123"
+            });
+            var loginBodyData = new StringContent(loginJson, Encoding.UTF8, "application/json");
+
+            var loginResponse = await Client.PostAsync("/api/Account/Login", loginBodyData).ConfigureAwait(continueOnCapturedContext: false);
+            if (!loginResponse.IsSuccessStatusCode) throw new Exception("Should get 200");
+
+            var loginResponseText = await loginResponse.Content.ReadAsStringAsync();
+            var loginResponseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(loginResponseText);
+
+            var token = loginResponseValuePairs.GetValueOrDefault("token");
+            if (token == null) throw new Exception("Should get token");
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var newParkJson = JsonConvert.SerializeObject(new
+            {
+                name = "Rust-free parking",
+                parkingSpots = 1337,
+                priceMultiplier = 69
+            });
+            var parkBodyData = new StringContent(newParkJson, Encoding.UTF8, "application/json");
+
+            var parkResponse = await Client.PostAsync("/api/Admin/AddSpacePort", parkBodyData).ConfigureAwait(continueOnCapturedContext: false);
+            Assert.Equal(HttpStatusCode.OK, parkResponse.StatusCode);
         }
     }
 }
