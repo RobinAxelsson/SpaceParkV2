@@ -6,26 +6,26 @@ namespace SpacePark_API.Authentication
         public int ParkingSpots { get; set; }
         public int PriceMultiplier { get; set; }
     }
-    public class ChangeSpacePortAvailabilityId
+    public class ChangeSpacePortAvailability
     {
-        public string NameOrId { get; set; }
+        public string Name { get; set; }
         public bool Enabled { get; set; }
     }
   
-    public class RemoveSpacePortModelId
+    public class RemoveSpacePortModel
     {
-        public string NameOrId { get; set; }
+        public string Name { get; set; }
     }
 
-    public class UpdateSpacePortPriceId
+    public class UpdateSpacePortPrice
     {
-        public string NameOrId { get; set; }
+        public string Name { get; set; }
         public double SpacePortMultiplier { get; set; }
     }
    
-    public class UpdateSpacePortNameId
+    public class UpdateSpacePortName
     {
-        public string NameOrId { get; set; }
+        public string OldSpacePortName { get; set; }
         public string NewSpacePortName { get; set; }
     }
    

@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using SpacePark_API.Authentication;
 using SpacePark_API.DataAccess;
 using SpacePark_API.Models;
@@ -16,9 +20,9 @@ namespace SpacePark_API.Controllers
         {
             _repository = repository;
         }
-
+        [AuthorizeRoles(Role.Administrator)]
         [HttpGet]
-        [Route("api/[controller]/Account")]
+        [Route("api/[controller]/Accounts")]
         public List<Account> Get()
         {
             var accounts = _repository.Accounts
@@ -27,7 +31,7 @@ namespace SpacePark_API.Controllers
                 .Include(hw => hw.Person.Homeplanet).ToList();
             return accounts;
         }
-        
+        [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/AddSpacePort")]
         public IActionResult Get([FromBody] AddSpacePortModel model)
@@ -48,73 +52,79 @@ namespace SpacePark_API.Controllers
                 
             });
         }
-
+        [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/SpacePortEnabled")]
-        public IActionResult Get([FromBody] ChangeSpacePortAvailabilityId model)
+        public IActionResult Get([FromBody] ChangeSpacePortAvailability model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Id == model.SpacePortId) == null)
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
                 return NotFound();
-            var port = _repository.SpacePorts.Single(p => p.Id == model.SpacePortId);
+            var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             port.Enabled = false;
             _repository.Update(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with ID: {model.SpacePortId} has been set to {model.Enabled}"
+                $"SpacePort with the name: {model.Name} has been set to {model.Enabled}"
             );
         }
-        private void SpacePort_ParseIdName(string input)
-        {
-            
-        }
-
+        [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/DeleteSpacePort")]
-        public IActionResult Get([FromBody] RemoveSpacePortModelId model)
+        public IActionResult Get([FromBody] RemoveSpacePortModel model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Id == model.SpacePortId) == null)
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
                 return NotFound();
-            var port = _repository.SpacePorts.Single(p => p.Id == model.SpacePortId);
+            var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             _repository.Remove(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with ID: {model.SpacePortId} has been removed"
+                $"SpacePort with the name: {model.Name} has been removed"
             );
         }
-        
+        [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/UpdateSpacePortPrice")]
-        public IActionResult Get([FromBody] UpdateSpacePortPriceId model)
+        public IActionResult Get([FromBody] UpdateSpacePortPrice model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Id == model.SpacePortId) == null)
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
                 return NotFound();
-            var port = _repository.SpacePorts.Single(p => p.Id == model.SpacePortId);
+            var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             var oldMultiplier = port.PriceMultiplier; //Cache old mult. for message
             port.PriceMultiplier = model.SpacePortMultiplier;
             _repository.Update(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with ID: {model.SpacePortId} has been updated with the new price multiplier to {model.SpacePortMultiplier} from {oldMultiplier}"
+                $"SpacePort with the name: {model.Name} has been updated with the new price multiplier to {model.SpacePortMultiplier} from {oldMultiplier}"
             );
         }
-        
+        [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/UpdateSpacePortName")]
-        public IActionResult Get([FromBody] UpdateSpacePortNameId model)
+        public IActionResult Get([FromBody] UpdateSpacePortName model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Id == model.SpacePortId) == null)
-                return NotFound();
+            if (!_repository.SpacePorts.Any())
+                return NotFound("There are no registered Spaceports.");
             if (_repository.SpacePorts.Single(p => p.Name == model.NewSpacePortName) != null)
                 return Forbid("Name is already taken");
-            var port = _repository.SpacePorts.Single(p => p.Id == model.SpacePortId);
-            var oldName = port.Name; //Cache old name. for message
+            var port = _repository.SpacePorts.Single(p => p.Name == model.OldSpacePortName);
             port.Name = model.NewSpacePortName;
             _repository.Update(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with ID: {model.SpacePortId} has gained a new name. From {oldName} to {model.NewSpacePortName}"
+                $"SpacePort with the previous name of {model.OldSpacePortName} has gained a new name; {model.NewSpacePortName}"
             );
         }
-
+        [AuthorizeRoles(Role.Administrator)]
+        [HttpGet]
+        [Route("api/[controller]/GetAccount")]
+        public List<Account> Get(string name)
+        {
+            var accounts = _repository.Accounts
+                .Where(a => a.AccountName == name)
+                .Include(p => p.Person)
+                .Include(ss => ss.SpaceShip)
+                .Include(hw => hw.Person.Homeplanet).ToList();
+            return accounts;
+        }
     }
 }

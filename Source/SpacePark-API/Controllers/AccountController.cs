@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -65,14 +66,13 @@ namespace SpacePark_API.Controllers
 
             if (account.Password != model.Password || account.AccountName != model.Username) return Unauthorized();
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
+        
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
-
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             var userToken = new UserToken()
             {
@@ -80,7 +80,7 @@ namespace SpacePark_API.Controllers
                 ExpiryDate = token.ValidTo,
                 Token = tokenString
             };
-
+     
             _repository.Add(userToken);
             _repository.SaveChanges();
 
@@ -90,7 +90,7 @@ namespace SpacePark_API.Controllers
                 expiration = token.ValidTo
             });
         }
-
+    
         [HttpGet]
         [Route("api/[controller]/Ships")]
         public List<SpaceShip> Get(int maxLength = 150)
