@@ -63,7 +63,11 @@ namespace SpacePark_API.Controllers
                 $"SpacePort with ID: {model.SpacePortId} has been set to {model.Enabled}"
             );
         }
-        
+        private void SpacePort_ParseIdName(string input)
+        {
+            
+        }
+
         [HttpPost]
         [Route("api/[controller]/DeleteSpacePort")]
         public IActionResult Get([FromBody] RemoveSpacePortModelId model)
