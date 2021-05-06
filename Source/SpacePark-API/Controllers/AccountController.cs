@@ -7,8 +7,10 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SpacePark_API.Authentication;
@@ -60,7 +62,7 @@ namespace SpacePark_API.Controllers
             return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
         [HttpPost]
-        [Route("api/[controller]/login")]
+        [Route("api/[controller]/Login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
                 var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
@@ -83,6 +85,27 @@ namespace SpacePark_API.Controllers
                 token = tokenString,
                 expiration = token.ValidTo
             });
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/ChangeSpaceShip")]
+        public IActionResult ChangeSpaceShip(string spaceshipModel)
+        {
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
+            var account = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).Single()
+                .Account;
+            if (account == null)
+                return NotFound("An account connected to this token was not found... strange...");
+            var spaceship = APICollector.ParseShipAsync(spaceshipModel);
+            if (spaceship == null)
+                return NotFound($"A ship with the model {spaceshipModel} was not found.");
+            account.SpaceShip = spaceship;
+            _repository.Update(account);
+            _repository.SaveChanges();
+            return Ok(
+                $"This account now uses spaceship {spaceship}"
+            );
         }
         private JwtSecurityToken GetJwtToken(ClaimsIdentity identity)
         {
@@ -112,6 +135,7 @@ namespace SpacePark_API.Controllers
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, account.Role));
             return claimsIdentity;
         }
+        
         [HttpGet]
         [Route("api/[controller]/Ships")]
         public List<SpaceShip> Get(int maxLength = 150)
