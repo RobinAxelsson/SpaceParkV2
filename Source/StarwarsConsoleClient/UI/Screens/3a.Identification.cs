@@ -1,4 +1,4 @@
-﻿using StarWarsApi.Database;
+﻿using StarwarsConsoleClient.Main;
 using System;
 using System.IO;
 using System.Threading;

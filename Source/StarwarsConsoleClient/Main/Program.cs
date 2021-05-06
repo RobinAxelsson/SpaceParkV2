@@ -1,5 +1,3 @@
-using StarWarsApi.Database;
-using StarWarsApi.Models;
 using StarwarsConsoleClient.UI.Screens;
 using System;
 using System.Globalization;
@@ -17,7 +15,6 @@ namespace StarwarsConsoleClient.Main
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
-
         public static Account _account { get; set; } = new();
         public static (string accountName, string password) _namepass { get; set; }
 

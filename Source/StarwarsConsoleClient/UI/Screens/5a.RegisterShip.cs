@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
-using StarWarsApi.Database;
-using StarWarsApi.Models;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
-using StarWarsApi.Networking;
 using static StarwarsConsoleClient.Main.Program;
+using StarwarsConsoleClient.Main;
 
 namespace StarwarsConsoleClient.UI.Screens
 {

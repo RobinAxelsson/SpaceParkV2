@@ -1,5 +1,6 @@
-﻿using StarWarsApi.Database;
-using StarWarsApi.Models;
+﻿
+
+using StarwarsConsoleClient.Main;
 using System;
 using System.Collections.Generic;
 using System.IO;

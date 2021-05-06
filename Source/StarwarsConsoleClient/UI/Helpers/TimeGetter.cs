@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StarwarsConsoleClient.Main;
+using System;
 
 namespace StarwarsConsoleClient.UI
 {
