@@ -12,8 +12,9 @@ namespace SpacePark_API.DataAccess
         IQueryable<Homeworld> Homeworlds { get; }
         IQueryable<SpacePort> SpacePorts { get; }
         IQueryable<UserToken> UserTokens { get; }
-        void Add<EntityType>(EntityType entity);
-        void Update<EntityType>(EntityType entity);
+        void Add<TEntityType>(TEntityType entity);
+        void Update<TEntityType>(TEntityType entity);
+        void Remove<TEntityType>(TEntityType entity);
         void SaveChanges();
     }
 }

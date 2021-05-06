@@ -17,9 +17,10 @@ namespace SpacePark_API.Models
         }
 
         public int Id { get; set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public int ParkingSpots { get; private set; }
-        public double PriceMultiplier { get; private set; }
+        public double PriceMultiplier { get; set; }
+        public bool Enabled { get; set; }
         public string Park(Account account, double minutes, IStarwarsRepository repository)
         {
             if (GetActiveParkings(repository) < ParkingSpots)

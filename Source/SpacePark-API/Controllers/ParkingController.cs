@@ -53,13 +53,16 @@ namespace SpacePark_API.Controllers
                 PurchasedBy = account.Person.Name
             });
         }
+        
         [HttpGet]
         [Route("api/[controller]/Price")]
-        public decimal Get(int SpacePortID, string spaceShipModel, double minutes)
+        public decimal Get(int spacePortId, string spaceShipModel, double minutes)
         {
-            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == SpacePortID);
-            var spaceShip = APICollector.ParseShip(spaceShipModel);
+            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == spacePortId);
+            var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }
+
+      
     }
 }
