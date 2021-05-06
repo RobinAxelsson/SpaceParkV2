@@ -61,7 +61,6 @@ namespace SpacePark_API.Controllers
                 Name = port.Name, 
                 ParkingSpots = model.ParkingSpots,
                 PriceMultiplier = model.PriceMultiplier,
-                
             });
         }
         [AuthorizeRoles(Role.Administrator)]

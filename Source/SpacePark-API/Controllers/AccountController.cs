@@ -108,6 +108,18 @@ namespace SpacePark_API.Controllers
                 $"This account now uses spaceship {spaceship}"
             );
         }
+        
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/GetHomeworld")]
+        public Homeworld GetHomeworld()
+        {
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
+            var homePlanet = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).Include(hp => hp.Account.Person.Homeplanet).Single()
+                .Account.Person.Homeplanet;
+            return homePlanet;
+        }
         private JwtSecurityToken GetJwtToken(ClaimsIdentity identity)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));

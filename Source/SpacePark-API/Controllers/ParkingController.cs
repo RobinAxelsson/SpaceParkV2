@@ -25,7 +25,7 @@ namespace SpacePark_API.Controllers
         [Authorize]
         [HttpPost]
         [Route("api/[controller]/Park")]
-        public IActionResult Post([FromBody] ParkingModelId model)
+        public IActionResult Park([FromBody] ParkingModelId model)
         {
             var spacePort = _repository.SpacePorts.Single(sp => sp.Id == model.SpacePortId);
             var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
@@ -62,9 +62,11 @@ namespace SpacePark_API.Controllers
         {
             return _repository.SpacePorts.ToList();
         }
+        
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]/Price")]
-        public decimal Get(int spacePortId, string spaceShipModel, double minutes)
+        public decimal GetPrice(int spacePortId, string spaceShipModel, double minutes)
         {
             var spacePort = _repository.SpacePorts.Single(sp => sp.Id == spacePortId);
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
