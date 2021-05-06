@@ -50,8 +50,8 @@ namespace SpacePark_API.Controllers
         }
 
         [HttpPost]
-        [Route("api/[controller]/DisableSpacePort")]
-        public IActionResult Get([FromBody] DisableSpacePortModelId model)
+        [Route("api/[controller]/SpacePortEnabled")]
+        public IActionResult Get([FromBody] ChangeSpacePortAvailabilityId model)
         {
             if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Id == model.SpacePortId) == null)
                 return NotFound();
@@ -60,9 +60,11 @@ namespace SpacePark_API.Controllers
             _repository.Update(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with ID: {model.SpacePortId} has been disabled"
+                $"SpacePort with ID: {model.SpacePortId} has been set to {model.Enabled}"
             );
         }
+        
+     
         
         [HttpPost]
         [Route("api/[controller]/DeleteSpacePort")]
@@ -114,8 +116,8 @@ namespace SpacePark_API.Controllers
 
         #region Overloads
         [HttpPost]
-        [Route("api/[controller]/DisableSpacePort")]
-        public IActionResult Get([FromBody] DisableSpacePortModelString model)
+        [Route("api/[controller]/SpacePortEnabled")]
+        public IActionResult Get([FromBody] ChangeSpacePortAvailabilityString model)
         {
             if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
                 return NotFound();
@@ -124,7 +126,7 @@ namespace SpacePark_API.Controllers
             _repository.Update(port);
             _repository.SaveChanges();
             return Ok(
-                $"SpacePort with the name: {model.Name} has been disabled"
+                $"SpacePort with the name: {model.Name} has been set to {model.Enabled}"
             );
         }
 

@@ -6,12 +6,12 @@ namespace SpacePark_API.Authentication
         public int ParkingSpots { get; set; }
         public int PriceMultiplier { get; set; }
     }
-    public class DisableSpacePortModelId
+    public class ChangeSpacePortAvailabilityId
     {
         public int SpacePortId { get; set; }
         public bool Enabled { get; set; }
     }
-    public class DisableSpacePortModelString
+    public class ChangeSpacePortAvailabilityString
     {
         public string Name { get; set; }
         public bool Enabled { get; set; }
