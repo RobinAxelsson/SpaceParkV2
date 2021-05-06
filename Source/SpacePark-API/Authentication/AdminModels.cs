@@ -36,4 +36,9 @@ namespace SpacePark_API.Authentication
     {
         public string AccountName { get; set; }
     }
+    
+    public class GetAccountModel
+    {
+        public string AccountName { get; set; }
+    }
 }

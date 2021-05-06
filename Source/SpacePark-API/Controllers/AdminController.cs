@@ -21,9 +21,9 @@ namespace SpacePark_API.Controllers
             _repository = repository;
         }
         [AuthorizeRoles(Role.Administrator)]
-        [HttpGet]
+        [HttpPost]
         [Route("api/[controller]/Accounts")]
-        public List<Account> Get()
+        public List<Account> Post()
         {
             var accounts = _repository.Accounts
                 .Include(p => p.Person)
@@ -31,13 +31,14 @@ namespace SpacePark_API.Controllers
                 .Include(hw => hw.Person.Homeplanet).ToList();
             return accounts;
         }
+        
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/AddSpacePort")]
-        public IActionResult Get([FromBody] AddSpacePortModel model)
+        public IActionResult Post([FromBody] AddSpacePortModel model)
         {
-            if (_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) != null)
-                return Forbid();
+            if (_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) != null)
+                return Conflict($"Spaceport with name {model.Name} already exists");
 
 
             var port = new SpacePort(model.Name, model.ParkingSpots, model.PriceMultiplier) {Enabled = true };
@@ -55,10 +56,10 @@ namespace SpacePark_API.Controllers
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/SpacePortEnabled")]
-        public IActionResult Get([FromBody] ChangeSpacePortAvailability model)
+        public IActionResult Post([FromBody] ChangeSpacePortAvailability model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
-                return NotFound();
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) == null)
+                return NotFound($"Spaceport with name {model.Name} was not found.");
             var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             port.Enabled = false;
             _repository.Update(port);
@@ -70,10 +71,10 @@ namespace SpacePark_API.Controllers
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/DeleteSpacePort")]
-        public IActionResult Get([FromBody] RemoveSpacePortModel model)
+        public IActionResult Post([FromBody] RemoveSpacePortModel model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
-                return NotFound();
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) == null)
+                return NotFound($"Spaceport with name {model.Name} was not found.");
             var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             _repository.Remove(port);
             _repository.SaveChanges();
@@ -84,10 +85,10 @@ namespace SpacePark_API.Controllers
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/UpdateSpacePortPrice")]
-        public IActionResult Get([FromBody] UpdateSpacePortPrice model)
+        public IActionResult Post([FromBody] UpdateSpacePortPrice model)
         {
-            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.Single(p => p.Name == model.Name) == null)
-                return NotFound();
+            if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) == null)
+                return NotFound($"Spaceport with name {model.Name} was not found.");
             var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
             var oldMultiplier = port.PriceMultiplier; //Cache old mult. for message
             port.PriceMultiplier = model.SpacePortMultiplier;
@@ -100,12 +101,12 @@ namespace SpacePark_API.Controllers
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/UpdateSpacePortName")]
-        public IActionResult Get([FromBody] UpdateSpacePortName model)
+        public IActionResult Post([FromBody] UpdateSpacePortName model)
         {
             if (!_repository.SpacePorts.Any())
                 return NotFound("There are no registered Spaceports.");
-            if (_repository.SpacePorts.Single(p => p.Name == model.NewSpacePortName) != null)
-                return Forbid("Name is already taken");
+            if (_repository.SpacePorts.SingleOrDefault(p => p.Name == model.NewSpacePortName) != null)
+                return Conflict($"Spaceport with name {model.NewSpacePortName} already exists");
             var port = _repository.SpacePorts.Single(p => p.Name == model.OldSpacePortName);
             port.Name = model.NewSpacePortName;
             _repository.Update(port);
@@ -117,12 +118,12 @@ namespace SpacePark_API.Controllers
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
         [Route("api/[controller]/PromoteAdmin")]
-        public IActionResult Get([FromBody] PromoteAdminModel model)
+        public IActionResult Post([FromBody] PromoteAdminModel model)
         {
             if (!_repository.Accounts.Any())
                 return NotFound("There are no registered accounts.");
-            if (_repository.Accounts.Single(a => a.AccountName == model.AccountName) == null)
-                return NotFound();
+            if (_repository.Accounts.SingleOrDefault(a => a.AccountName == model.AccountName) == null)
+                return NotFound($"Account with name {model.AccountName} was not found.");
             
             var account = _repository.Accounts.Single(a => a.AccountName == model.AccountName);
             account.Role = Role.Administrator;
@@ -134,13 +135,13 @@ namespace SpacePark_API.Controllers
         }
         [AuthorizeRoles(Role.Administrator)]
         [HttpPost]
-        [Route("api/[controller]/PromoteAdmin")]
-        public IActionResult Get([FromBody] DemoteAdminModel model)
+        [Route("api/[controller]/DemoteAdmin")]
+        public IActionResult Post([FromBody] DemoteAdminModel model)
         {
             if (!_repository.Accounts.Any())
                 return NotFound("There are no registered accounts.");
-            if (_repository.Accounts.Single(a => a.AccountName == model.AccountName) == null)
-                return NotFound();
+            if (_repository.Accounts.SingleOrDefault(a => a.AccountName == model.AccountName) == null)
+                return NotFound($"Account with name {model.AccountName} was not found.");
             
             var account = _repository.Accounts.Single(a => a.AccountName == model.AccountName);
             account.Role = Role.User;
@@ -151,9 +152,9 @@ namespace SpacePark_API.Controllers
             );
         }
         [AuthorizeRoles(Role.Administrator)]
-        [HttpGet]
+        [HttpPost]
         [Route("api/[controller]/GetAccount")]
-        public List<Account> Get(string name)
+        public List<Account> Post(string name)
         {
             var accounts = _repository.Accounts
                 .Where(a => a.AccountName == name)
