@@ -64,8 +64,6 @@ namespace SpacePark_API.Controllers
             );
         }
         
-     
-        
         [HttpPost]
         [Route("api/[controller]/DeleteSpacePort")]
         public IActionResult Get([FromBody] RemoveSpacePortModelId model)
