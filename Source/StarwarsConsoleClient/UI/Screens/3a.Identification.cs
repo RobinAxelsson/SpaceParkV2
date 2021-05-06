@@ -48,7 +48,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 return Console.ReadLine();
             };
 
-            var user = DatabaseManagement.AccountManagement.IdentifyWithQuestion(username, getSecurityAnswer); //test
+            var user = AccountManagement.IdentifyWithQuestion(username, getSecurityAnswer); //test
 
             LineTools.ClearAt(fCoord, "Security question loading... plus the long answer that i cleared now!");
 
@@ -61,8 +61,8 @@ namespace StarwarsConsoleClient.UI.Screens
                 return Option.Start;
             }
 
-            var registrationExists = DatabaseManagement.AccountManagement.Exists(username, true);
-            var userExists = DatabaseManagement.AccountManagement.Exists(user.Name, false);
+            var registrationExists = AccountManagement.Exists(username, true);
+            var userExists = AccountManagement.Exists(user.Name, false);
 
             if (registrationExists == false && userExists == false)
             {

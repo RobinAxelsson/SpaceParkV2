@@ -3,17 +3,8 @@ using System.Threading;
 
 namespace StarwarsConsoleClient.Main
 {
-    public partial class DatabaseManagement
-    {
         public class ParkingManagement
         {
-            private ParkingManagement() //Instantiation. This will help us throw if ConnectionString is null.
-            {
-                if (ConnectionString == null)
-                    throw new Exception("The static property ConnectionString has not been assigned.",
-                        new Exception(
-                            "Please assign a value to the static property ConnectionString before calling any methods"));
-            }
 
             #region Static Methods
 
@@ -24,10 +15,10 @@ namespace StarwarsConsoleClient.Main
                 return pm._CheckParkingStatus();
             }
 
-            public static decimal CalculatePrice(SpaceShip ship, double minutes)
+            public static decimal CalculatePrice(SpaceShip ship, double minutes, double priceMultiplier)
             {
                 var pm = new ParkingManagement();
-                return pm._CalculatePrice(ship, minutes);
+                return pm._CalculatePrice(ship, minutes, priceMultiplier);
             }
 
             public static Receipt SendInvoice(Account account, double minutes)
@@ -70,9 +61,9 @@ namespace StarwarsConsoleClient.Main
                 return (isOpen, DateTime.Now);
             }
 
-            private decimal _CalculatePrice(SpaceShip ship, double minutes)
+            private decimal _CalculatePrice(SpaceShip ship, double minutes, double priceMultiplier)
             {
-                var price = double.Parse(ship.ShipLength.Replace(".", ",")) * minutes / PriceMultiplier;
+                var price = double.Parse(ship.ShipLength.Replace(".", ",")) * minutes / priceMultiplier;
                 return (decimal)price;
             }
 
@@ -110,4 +101,3 @@ namespace StarwarsConsoleClient.Main
             #endregion
         }
     }
-}

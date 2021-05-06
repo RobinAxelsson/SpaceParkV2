@@ -34,7 +34,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var calculatedPriceXY = props[3];
             var enterHoursXY = props[4];
             var receiptXY = props[5];
-            var openNext = DatabaseManagement.ParkingManagement.CheckParkingStatus(); //TODO parkingstatus
+            var openNext = ParkingManagement.CheckParkingStatus(); //TODO parkingstatus
 
             Console.ForegroundColor = ConsoleColor.Green;
             LineTools.SetCursor(parkFromXY);
@@ -45,7 +45,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            Console.Write(DatabaseManagement.ParkingManagement.CalculatePrice(_account.SpaceShip, 1) * 60);
+            Console.Write(ParkingManagement.CalculatePrice(_account.SpaceShip, 1, 9999) * 60); //TODO placeholder 9999
             LineTools.SetCursor(shipLengthXY);
             Console.Write(_account.SpaceShip.ShipLength);
 
@@ -56,8 +56,8 @@ namespace StarwarsConsoleClient.UI.Screens
             double hours;
 
 
-            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000,
-                DatabaseManagement.ParkingManagement.CalculatePrice);
+            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => (5));
+                //ParkingManagement.CalculatePrice);
 
             if (openNext.isOpen == false)
             {
@@ -78,7 +78,7 @@ namespace StarwarsConsoleClient.UI.Screens
             {
                 ConsoleWriter.ClearScreen();
 
-                var receipt = DatabaseManagement.ParkingManagement.SendInvoice(_account, hours);
+                var receipt = ParkingManagement.SendInvoice(_account, hours);
                 var boxData = new BoxData((Console.WindowWidth/2 - 10, parkFromXY.CoordinateY));
                 boxData.Update(new[] { "Loading receipt..." });
 

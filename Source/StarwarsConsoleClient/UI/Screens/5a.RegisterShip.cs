@@ -29,11 +29,11 @@ namespace StarwarsConsoleClient.UI.Screens
 
             if (reRegister)
             {
-                DatabaseManagement.AccountManagement.ReRegisterShip(_account, ship); //TODO change ship
+                AccountManagement.ReRegisterShip(_account, ship); //TODO change ship
                 return Option.Account;
             }
 
-            DatabaseManagement.AccountManagement.Register(_account.User, ship, _namepass.accountName,
+            AccountManagement.Register(_account.User, ship, _namepass.accountName,
                 _namepass.password); //TODO First registration
             return Option.Login;
         }

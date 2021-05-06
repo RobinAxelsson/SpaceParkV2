@@ -1,3 +1,4 @@
+using StarwarsConsoleClient.Networking;
 using StarwarsConsoleClient.UI.Screens;
 using System;
 using System.Globalization;
@@ -14,11 +15,13 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Client = new SpaceParkClient(@"https://localhost:5001/");
         }
+        public static readonly SpaceParkClient Client;
         public static Account _account { get; set; } = new();
         public static (string accountName, string password) _namepass { get; set; }
 
-        private static void Main(string[] args)
+        private static void MainDisabled(string[] args)
         {
             ShowWindow(ThisConsole, 3);
             Console.CursorVisible = false;
@@ -39,7 +42,7 @@ namespace StarwarsConsoleClient.Main
                         option = Screen.Identification();
                         break;
                     case Option.Login:
-                        option = Screen.Login();
+                        option = Screen.Login().Result;
                         break;
                     case Option.Registration:
                         option = Screen.Registration();

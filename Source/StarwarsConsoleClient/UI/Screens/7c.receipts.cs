@@ -19,7 +19,7 @@ namespace StarwarsConsoleClient.UI.Screens
             TextEditor.Center.AllUnitsInXDir(drawables, Console.WindowWidth);
             ConsoleWriter.TryAppend(drawables);
             ConsoleWriter.Update();
-            var receipts = DatabaseManagement.AccountManagement.GetAccountReceipts(_account);
+            var receipts = AccountManagement.GetAccountReceipts(_account);
             
             var receiptStrings = new List<string[]>();
 
