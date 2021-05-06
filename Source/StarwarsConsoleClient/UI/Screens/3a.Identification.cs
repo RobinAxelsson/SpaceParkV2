@@ -31,6 +31,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.CursorVisible = true;
             };
 
+            //TODO input new inputs Identification with no question?
             var fCoord = GetCoord("F");
             var nameEndCoord = GetCoord(":");
 
@@ -47,7 +48,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 return Console.ReadLine();
             };
 
-            var user = DatabaseManagement.AccountManagement.IdentifyWithQuestion(username, getSecurityAnswer);
+            var user = DatabaseManagement.AccountManagement.IdentifyWithQuestion(username, getSecurityAnswer); //test
 
             LineTools.ClearAt(fCoord, "Security question loading... plus the long answer that i cleared now!");
 

@@ -48,7 +48,7 @@ namespace StarwarsConsoleClient.UI.Screens
             } while (password1 != password2 || accountName.Length <= 5 || password1.Length <= 5);
 
             _namepass = (accountName, password1);
-            if (DatabaseManagement.AccountManagement.Exists(accountName, true))
+            if (DatabaseManagement.AccountManagement.Exists(accountName, true)) //TODO change to new methods
             {
                 ConsoleWriter.ClearScreen();
                 LineTools.SetCursor(nameCoord);

@@ -14,7 +14,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var lines = File.ReadAllLines(@"UI/maps/5a.RegisterShip.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
             var nextLine = drawables.Max(x => x.CoordinateY);
-            var ships = APICollector.ReturnShipsAsync().Where(s => double.Parse(s.ShipLength) <= 150).ToArray();
+            var ships = SwapiCollector.ReturnShipsAsync().Where(s => double.Parse(s.ShipLength) <= 150).ToArray();
             var shipLines = ships.Select(x => "$ " + x.Model).ToArray();
             drawables.AddRange(TextEditor.Add.DrawablesAt(shipLines, nextLine + 3));
             TextEditor.Center.ToScreen(drawables, Console.WindowWidth, Console.WindowHeight);
@@ -29,12 +29,12 @@ namespace StarwarsConsoleClient.UI.Screens
 
             if (reRegister)
             {
-                DatabaseManagement.AccountManagement.ReRegisterShip(_account, ship);
+                DatabaseManagement.AccountManagement.ReRegisterShip(_account, ship); //TODO change ship
                 return Option.Account;
             }
 
             DatabaseManagement.AccountManagement.Register(_account.User, ship, _namepass.accountName,
-                _namepass.password);
+                _namepass.password); //TODO First registration
             return Option.Login;
         }
     }

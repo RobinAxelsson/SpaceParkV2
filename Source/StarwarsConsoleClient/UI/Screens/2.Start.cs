@@ -5,7 +5,7 @@ namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option Start()
+        public static Option Start() //TODO add admin-pages
         {
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/2.Start.txt");

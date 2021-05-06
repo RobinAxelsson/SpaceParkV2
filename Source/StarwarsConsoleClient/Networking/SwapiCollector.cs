@@ -10,7 +10,7 @@ using static StarwarsConsoleClient.Main.User;
 
 namespace StarwarsConsoleClient.Main
 {
-    public static class APICollector
+    public static class SwapiCollector
     {
         private static Exception ParseFailedIncorrectUrl(string url)
         {

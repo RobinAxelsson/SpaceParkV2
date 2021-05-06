@@ -1,13 +1,14 @@
 ﻿using StarwarsConsoleClient.Main;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using static StarwarsConsoleClient.Main.Program;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option Login()
+        public static async Task<Option> Login()
         {
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/3b.Login.txt");
@@ -30,7 +31,7 @@ namespace StarwarsConsoleClient.UI.Screens
             Console.SetCursorPosition(Console.WindowWidth/2-10, Console.WindowHeight/2 - 3);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Validating login...");
-            _account = DatabaseManagement.AccountManagement.ValidateLogin(accountName, password);
+            _account = await DatabaseManagement.AccountManagement.ValidateLoginAsync(accountName, password); //TODO replace with new RESTcalls (keep)
             return _account != null ? Option.Account : Option.Start;
         }
     }

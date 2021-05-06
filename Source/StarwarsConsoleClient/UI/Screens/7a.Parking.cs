@@ -34,7 +34,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var calculatedPriceXY = props[3];
             var enterHoursXY = props[4];
             var receiptXY = props[5];
-            var openNext = DatabaseManagement.ParkingManagement.CheckParkingStatus();
+            var openNext = DatabaseManagement.ParkingManagement.CheckParkingStatus(); //TODO parkingstatus
 
             Console.ForegroundColor = ConsoleColor.Green;
             LineTools.SetCursor(parkFromXY);
