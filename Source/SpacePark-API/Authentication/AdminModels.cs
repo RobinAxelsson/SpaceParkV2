@@ -28,5 +28,12 @@ namespace SpacePark_API.Authentication
         public string OldSpacePortName { get; set; }
         public string NewSpacePortName { get; set; }
     }
-   
+    public class PromoteAdminModel
+    {
+        public string AccountName { get; set; }
+    }
+    public class DemoteAdminModel
+    {
+        public string AccountName { get; set; }
+    }
 }

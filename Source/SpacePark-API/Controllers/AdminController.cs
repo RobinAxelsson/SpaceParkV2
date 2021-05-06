@@ -115,6 +115,42 @@ namespace SpacePark_API.Controllers
             );
         }
         [AuthorizeRoles(Role.Administrator)]
+        [HttpPost]
+        [Route("api/[controller]/PromoteAdmin")]
+        public IActionResult Get([FromBody] PromoteAdminModel model)
+        {
+            if (!_repository.Accounts.Any())
+                return NotFound("There are no registered accounts.");
+            if (_repository.Accounts.Single(a => a.AccountName == model.AccountName) == null)
+                return NotFound();
+            
+            var account = _repository.Accounts.Single(a => a.AccountName == model.AccountName);
+            account.Role = Role.Administrator;
+            _repository.Update(account);
+            _repository.SaveChanges();
+            return Ok(
+                $"Account with the name of {model.AccountName} has been promoted to administrator"
+            );
+        }
+        [AuthorizeRoles(Role.Administrator)]
+        [HttpPost]
+        [Route("api/[controller]/PromoteAdmin")]
+        public IActionResult Get([FromBody] DemoteAdminModel model)
+        {
+            if (!_repository.Accounts.Any())
+                return NotFound("There are no registered accounts.");
+            if (_repository.Accounts.Single(a => a.AccountName == model.AccountName) == null)
+                return NotFound();
+            
+            var account = _repository.Accounts.Single(a => a.AccountName == model.AccountName);
+            account.Role = Role.User;
+            _repository.Update(account);
+            _repository.SaveChanges();
+            return Ok(
+                $"Account with the name of {model.AccountName} has been demoted to user"
+            );
+        }
+        [AuthorizeRoles(Role.Administrator)]
         [HttpGet]
         [Route("api/[controller]/GetAccount")]
         public List<Account> Get(string name)
