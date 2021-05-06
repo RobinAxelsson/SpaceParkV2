@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
@@ -53,7 +54,14 @@ namespace SpacePark_API.Controllers
                 PurchasedBy = account.Person.Name
             });
         }
-        
+
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/GetSpacePorts")]
+        public List<SpacePort> GetSpacePorts()
+        {
+            return _repository.SpacePorts.ToList();
+        }
         [HttpGet]
         [Route("api/[controller]/Price")]
         public decimal Get(int spacePortId, string spaceShipModel, double minutes)
