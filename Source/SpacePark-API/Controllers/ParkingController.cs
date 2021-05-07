@@ -27,10 +27,10 @@ namespace SpacePark_API.Controllers
         [Route("api/[controller]/Park")]
         public IActionResult Park([FromBody] ParkingModelId model)
         {
-            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == model.SpacePortId);
+            var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Id == model.SpacePortId);
             var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
             var account = _repository.UserTokens.Where(a => a.Token == token)
-                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).Single()
+                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).SingleOrDefault()
                 .Account;
             if (account == null || spacePort == null)
                 return NotFound();
@@ -68,7 +68,7 @@ namespace SpacePark_API.Controllers
         [Route("api/[controller]/Price")]
         public decimal GetPrice(int spacePortId, string spaceShipModel, double minutes)
         {
-            var spacePort = _repository.SpacePorts.Single(sp => sp.Id == spacePortId);
+            var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Id == spacePortId);
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }

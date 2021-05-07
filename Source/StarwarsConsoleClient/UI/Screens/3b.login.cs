@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StarwarsConsoleClient.Main;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using static StarwarsConsoleClient.Main.Program;
@@ -31,7 +32,6 @@ namespace StarwarsConsoleClient.UI.Screens
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Validating login...");
             bool success = await Client.LoginAsync(accountName, password);
-
             return success ? Option.Account : Option.Start;
         }
     }

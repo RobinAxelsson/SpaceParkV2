@@ -37,6 +37,8 @@ namespace StarwarsConsoleClient.Networking
                 public static readonly string changeSpaceShip =     @"/api/Account/ChangeSpaceShip";
                 public static readonly string getHomeworld =        @"​/api​/Account​/GetHomeworld";
                 public static readonly string Ships =               @"​/api​/Account​/Ships";
+                public static readonly string MyShip =              @"api/Account/MySpaceShip";
+                public static readonly string MyData =              @"api/Account/MyData";
             }
             public static class Parking
             {
@@ -119,12 +121,29 @@ namespace StarwarsConsoleClient.Networking
             _log.LogClientData(responseData);
             return response.IsSuccessStatusCode;
         }
-        public async Task<bool> GetHomeworldAsync()
+        public async Task<Homeworld> GetHomeworldAsync()
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.getHomeworld, null);
             var responseData = await ClientResponseData.ToData(response);
             _log.LogClientData(responseData);
-            return response.IsSuccessStatusCode;
+            var homeworld = responseData.ResponseAsObject<Homeworld>();
+            return homeworld;
+        }
+        public async Task<SpaceShip> MySpaceShipAsync()
+        {
+            var response = await JsonPostRequestAsync(EndPoints.Account.MyShip, null); //
+            var responseData = await ClientResponseData.ToData(response);
+            _log.LogClientData(responseData);
+            var spaceShip = responseData.ResponseAsObject<SpaceShip>();
+            return spaceShip;
+        }
+        public async Task<Person> MyDataAsync()
+        {
+            var response = await JsonPostRequestAsync(EndPoints.Account.MyData, null); //
+            var responseData = await ClientResponseData.ToData(response);
+            _log.LogClientData(responseData);
+            var person = responseData.ResponseAsObject<Person>();
+            return person;
         }
         public async Task<IEnumerable<SpaceShip>> GetShipsAsync()
         {

@@ -1,14 +1,20 @@
-﻿using System;
+﻿using StarwarsConsoleClient.Main;
+using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using static StarwarsConsoleClient.Main.Program;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option Account()
+        public static async Task<Option> Account()
         {
+            var myDataPromise = Client.MyDataAsync();
+            var myShipPromise = Client.MySpaceShipAsync();
+            var myHomeworldPromise = Client.GetHomeworldAsync();
+
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/6.Account.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
@@ -33,12 +39,15 @@ namespace StarwarsConsoleClient.UI.Screens
             ConsoleWriter.TryAppend(drawables);
             ConsoleWriter.Update();
 
+            UserData.Person = await myDataPromise;
+            UserData.SpaceShip = await myShipPromise;
+            UserData.Person.Homeplanet = await myHomeworldPromise;
+
             Console.ForegroundColor = ConsoleColor.Green;
             LineTools.SetCursor(nameCoord);
-            Console.Write(User);
+            Console.Write(UserData.Person.Name);
             LineTools.SetCursor(shipCoord);
-            Console.Write(_account.SpaceShip.Model);
-
+            Console.Write(UserData.SpaceShip.Model);
             return selectionList.GetSelection();
         }
     }

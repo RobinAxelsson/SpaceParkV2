@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using static StarwarsConsoleClient.Main.Program;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option HomePlanet()
+        public static async Task<Option> HomePlanet()
         {
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/7.Homeplanet.txt");
@@ -25,7 +26,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var climate = new LineData(props[4]);
             var pop = new LineData(props[5]);
 
-            var homeplanet = _account.User.Homeplanet;
+            var homeplanet = await Client.GetHomeworldAsync();
             Console.ForegroundColor = ConsoleColor.Green;
             home.Update(homeplanet.Name);
             rotation.Update(homeplanet.RotationPeriod);

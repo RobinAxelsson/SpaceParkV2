@@ -5,7 +5,7 @@ namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option Start() //TODO add admin-pages
+        public static Option Start()
         {
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/2.Start.txt");
@@ -13,7 +13,7 @@ namespace StarwarsConsoleClient.UI.Screens
             TextEditor.Center.ToScreen(drawables, Console.WindowWidth, Console.WindowHeight);
             var selectionList = new SelectionList<Option>(ConsoleColor.Green, '$');
             selectionList.GetCharPositions(drawables);
-            selectionList.AddSelections(new[] { Option.Login, Option.Identification, Option.Exit });
+            selectionList.AddSelections(new[] { Option.Login, Option.Registration, Option.Exit });
             ConsoleWriter.TryAppend(drawables);
             ConsoleWriter.Update();
 

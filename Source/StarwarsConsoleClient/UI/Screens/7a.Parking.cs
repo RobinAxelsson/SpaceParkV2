@@ -3,7 +3,6 @@ using StarwarsConsoleClient.Main;
 using System;
 using System.IO;
 using System.Linq;
-using static StarwarsConsoleClient.Main.Program;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
@@ -45,9 +44,9 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            Console.Write(ParkingManagement.CalculatePrice(_account.SpaceShip, 1, 9999) * 60); //TODO placeholder 9999
+            Console.Write(ParkingManagement.CalculatePrice(UserData.SpaceShip, 1, 9999) * 60); //TODO placeholder 9999
             LineTools.SetCursor(shipLengthXY);
-            Console.Write(_account.SpaceShip.ShipLength);
+            Console.Write(UserData.SpaceShip.ShipLength);
 
             ConsoleWriter.TryAppend(drawables.Except(drawProps).ToList());
             ConsoleWriter.Update();
@@ -67,7 +66,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             do
             {
-                hours = timeGetter.GetMinutes(_account.SpaceShip);
+                hours = timeGetter.GetMinutes(UserData.SpaceShip);
                 menuSel = selectionList.GetSelection();
 
                 if (menuSel == Option.PurchaseTicket && hours == 0)

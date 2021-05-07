@@ -94,7 +94,7 @@ namespace SpacePark_API.Controllers
         {
             var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
             var account = _repository.UserTokens.Where(a => a.Token == token)
-                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).Single()
+                .Include(a => a.Account).Include(p => p.Account.Person).Include(ss => ss.Account.SpaceShip).SingleOrDefault()
                 .Account;
             if (account == null)
                 return NotFound("An account connected to this token was not found... strange...");
@@ -116,9 +116,39 @@ namespace SpacePark_API.Controllers
         {
             var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
             var homePlanet = _repository.UserTokens.Where(a => a.Token == token)
-                .Include(a => a.Account).Include(hp => hp.Account.Person.Homeplanet).Single()
+                .Include(a => a.Account).Include(hp => hp.Account.Person.Homeplanet).SingleOrDefault()
                 .Account.Person.Homeplanet;
             return homePlanet;
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/MySpaceShip")]
+        public SpaceShip MySpaceShip()
+        {
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
+            var spaceship = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).Include(hp => hp.Account.SpaceShip).SingleOrDefault()
+                .Account.SpaceShip;
+            return spaceship;
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/MyData")]
+        public Person MyData()
+        {
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
+            var person = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).Include(hp => hp.Account.Person).SingleOrDefault()
+                .Account.Person;
+            return person;
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/Ships")]
+        public List<SpaceShip> Get(int maxLength = 150)
+        {
+            var ships = APICollector.ReturnShipsAsync().Where(s => double.Parse(s.ShipLength.Replace(".", ",")) <= maxLength).ToList();
+            return ships;
         }
         private JwtSecurityToken GetJwtToken(ClaimsIdentity identity)
         {
@@ -148,13 +178,6 @@ namespace SpacePark_API.Controllers
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, account.Role));
             return claimsIdentity;
         }
-        
-        [HttpGet]
-        [Route("api/[controller]/Ships")]
-        public List<SpaceShip> Get(int maxLength = 150)
-        {
-            var ships = APICollector.ReturnShipsAsync().Where(s => double.Parse(s.ShipLength.Replace(".",",")) <= maxLength).ToList();
-            return ships;
-        }
+   
     }
 }

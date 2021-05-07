@@ -9,20 +9,6 @@ using System.Threading.Tasks;
 
 namespace StarwarsConsoleClient.Main
 {
-    public static class UserData
-    {
-        public static string PersonName { get; set; }
-        public static SpaceShip SpaceShip { get; set; }
-        public static string AccountName { get; set; }
-        public static string Password { get; set; }
-        public static void ClearData()
-        {
-            PersonName = null;
-            SpaceShip = null;
-            AccountName = null;
-            Password = null;
-        }
-    }
     public static class Program
     {
         public const ConsoleColor ForegroundColor = ConsoleColor.Green;
@@ -52,11 +38,9 @@ namespace StarwarsConsoleClient.Main
                     case Option.Start:
                         option = Screen.Start();
                         break;
-                    case Option.Identification:
-                        option = Screen.Identification();
-                        break;
                     case Option.Login:
-                        option = Screen.Login().Result;
+                        option = await Screen.Login();
+                        Client.OpenLogFile();
                         break;
                     case Option.Registration:
                         option = Screen.Registration();
@@ -65,13 +49,13 @@ namespace StarwarsConsoleClient.Main
                         option = await Screen.RegisterShip();
                         break;
                     case Option.Account:
-                        option = Screen.Account();
+                        option = await Screen.Account();
                         break;
                     case Option.Parking:
                         option = Screen.Parking();
                         break;
                     case Option.Homeplanet:
-                        option = Screen.HomePlanet();
+                        option = await Screen.HomePlanet();
                         break;
                     case Option.Receipts:
                         option = Screen.Receipts();

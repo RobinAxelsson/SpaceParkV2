@@ -27,15 +27,16 @@ namespace StarwarsConsoleClient.UI.Screens
             ConsoleWriter.Update();
 
             var ship = selectionList.GetSelection();
-            UserData.SpaceShip = ship;
+
             if (reRegister)
             {
                 var status = await Client.ChangeSpaceShipAsync(ship.Model);
                 return Option.Account;
             }
 
-            var success = await Client.RegisterAsync(ship.Model, UserData.PersonName, UserData.AccountName, UserData.Password);
-            return Option.Login;
+            var success = await Client.RegisterAsync(ship.Model, UserData.tryFullName, UserData.AccountName, UserData.Password);
+
+            return success? Option.Login : Option.Start;
         }
     }
 }

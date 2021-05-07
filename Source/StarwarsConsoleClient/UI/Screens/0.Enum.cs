@@ -4,7 +4,6 @@
     {
         Welcome,
         Start,
-        Identification,
         Login,
         Registration,
         RegisterShip,

@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static StarwarsConsoleClient.Main.Program;
+using StarwarsConsoleClient.Main;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
+        private static Account _account = new Account();
         public static Option Receipts()
         {
             ConsoleWriter.ClearScreen();

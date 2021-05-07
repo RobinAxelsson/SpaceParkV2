@@ -70,7 +70,7 @@ namespace SpacePark_API.Controllers
         {
             if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) == null)
                 return NotFound($"Spaceport with name {model.Name} was not found.");
-            var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
+            var port = _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name);
             port.Enabled = model.Enabled;
             _repository.Update(port);
             _repository.SaveChanges();
@@ -85,7 +85,7 @@ namespace SpacePark_API.Controllers
         {
             if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == spacePortName) == null)
                 return NotFound($"Spaceport with name {spacePortName} was not found.");
-            var port = _repository.SpacePorts.Single(p => p.Name == spacePortName);
+            var port = _repository.SpacePorts.SingleOrDefault(p => p.Name == spacePortName);
             _repository.Remove(port);
             _repository.SaveChanges();
             return Ok(
@@ -99,7 +99,7 @@ namespace SpacePark_API.Controllers
         {
             if (!_repository.SpacePorts.Any() && _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name) == null)
                 return NotFound($"Spaceport with name {model.Name} was not found.");
-            var port = _repository.SpacePorts.Single(p => p.Name == model.Name);
+            var port = _repository.SpacePorts.SingleOrDefault(p => p.Name == model.Name);
             var oldMultiplier = port.PriceMultiplier; //Cache old mult. for message
             port.PriceMultiplier = model.SpacePortMultiplier;
             _repository.Update(port);
@@ -117,7 +117,7 @@ namespace SpacePark_API.Controllers
                 return NotFound("There are no registered Spaceports.");
             if (_repository.SpacePorts.SingleOrDefault(p => p.Name == newSpacePortName) != null)
                 return Conflict($"Spaceport with name {newSpacePortName} already exists");
-            var port = _repository.SpacePorts.Single(p => p.Name == oldSpacePortName);
+            var port = _repository.SpacePorts.SingleOrDefault(p => p.Name == oldSpacePortName);
             port.Name = newSpacePortName;
             _repository.Update(port);
             _repository.SaveChanges();
@@ -135,7 +135,7 @@ namespace SpacePark_API.Controllers
             if (_repository.Accounts.SingleOrDefault(a => a.AccountName == accountName) == null)
                 return NotFound($"Account with name {accountName} was not found.");
             
-            var account = _repository.Accounts.Single(a => a.AccountName == accountName);
+            var account = _repository.Accounts.SingleOrDefault(a => a.AccountName == accountName);
             account.Role = Role.Administrator;
             _repository.Update(account);
             _repository.SaveChanges();
@@ -153,7 +153,7 @@ namespace SpacePark_API.Controllers
             if (_repository.Accounts.SingleOrDefault(a => a.AccountName == accountName) == null)
                 return NotFound($"Account with name {accountName} was not found.");
             
-            var account = _repository.Accounts.Single(a => a.AccountName == accountName);
+            var account = _repository.Accounts.SingleOrDefault(a => a.AccountName == accountName);
             account.Role = Role.User;
             _repository.Update(account);
             _repository.SaveChanges();
