@@ -53,7 +53,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             UserData.tryFullName = fullname;
             UserData.AccountName = accountName;
-            UserData.Password = accountName;
+            UserData.Password = password1;
 
             return Option.RegisterShip;
         }
