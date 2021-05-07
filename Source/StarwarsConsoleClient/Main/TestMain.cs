@@ -14,19 +14,22 @@ namespace StarwarsConsoleClient.Main
         static TestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpaceParkClient(@"https://localhost:5001/");
+            Client = new SpacePortApiClient(@"https://localhost:5001", @"StarwarsConsoleClient/Networking/API-Client_LOG.txt");
         }
-        public static readonly SpaceParkClient Client;
+        public static readonly SpacePortApiClient Client;
         public static (string accountName, string password) _namepass { get; set; }
 
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Tap to login!");
-            Console.ReadKey();
-            Console.WriteLine("Logging in...");
-            await LoginDarthMaul();
-            Console.WriteLine("Logged in!");
-            Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine("Tap to login again!");
+                Console.ReadKey();
+                Console.WriteLine("Logging in...");
+                await LoginDarthMaul();
+                Console.WriteLine("---End of message---");
+                Console.ReadLine();
+            }
         }
 
         private static async Task LoginDarthMaul()

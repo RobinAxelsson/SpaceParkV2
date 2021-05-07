@@ -15,9 +15,9 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpaceParkClient(@"https://localhost:5001/");
+            Client = new SpacePortApiClient(@"https://localhost:5001/", @"StarwarsConsoleClient/Networking/API-Client_LOG.txt");
         }
-        public static readonly SpaceParkClient Client;
+        public static readonly SpacePortApiClient Client;
         public static Account _account { get; set; } = new();
         public static (string accountName, string password) _namepass { get; set; }
 
