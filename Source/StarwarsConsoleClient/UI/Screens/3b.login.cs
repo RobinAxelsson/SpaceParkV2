@@ -31,7 +31,7 @@ namespace StarwarsConsoleClient.UI.Screens
             Console.SetCursorPosition(Console.WindowWidth/2-10, Console.WindowHeight/2 - 3);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Validating login...");
-            await Client.Login(accountName, password);
+            await Client.LoginAsync(accountName, password);
             _account = null;//await AccountManagement.ValidateLoginAsync(accountName, password); //TODO replace with new RESTcalls (keep)
             return _account != null ? Option.Account : Option.Start;
         }

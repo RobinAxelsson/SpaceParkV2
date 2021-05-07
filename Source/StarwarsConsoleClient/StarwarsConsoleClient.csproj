@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="API-Client_LOG.txt" />
     <None Remove="UI\maps\1.Welcome.txt" />
     <None Remove="UI\maps\2.Start.txt" />
     <None Remove="UI\maps\3a.Identification.txt" />
@@ -21,9 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="API-Client_LOG.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="UI\maps\1.Welcome.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

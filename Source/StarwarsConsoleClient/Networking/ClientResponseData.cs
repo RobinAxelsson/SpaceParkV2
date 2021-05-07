@@ -23,7 +23,6 @@ namespace StarwarsConsoleClient.Networking
         {
             var loginResponseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(ResponseContentString);
             var val = loginResponseValuePairs.GetValueOrDefault(key);
-            if (val == null) throw new Exception("Key could not be found");
             return val;
         }
         private ClientResponseData() { }

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace StarwarsConsoleClient.Main
 {
@@ -22,7 +23,7 @@ namespace StarwarsConsoleClient.Main
         public static Account _account { get; set; } = new();
         public static (string accountName, string password) _namepass { get; set; }
 
-        private static void MainDisabled(string[] args)
+        private static async Task Main(string[] args)
         {
             ShowWindow(ThisConsole, 3);
             Console.CursorVisible = false;
