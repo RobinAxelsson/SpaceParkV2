@@ -2,6 +2,7 @@ using StarwarsConsoleClient.Networking;
 using StarwarsConsoleClient.UI.Screens;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -15,7 +16,7 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:5001/", @"StarwarsConsoleClient/Networking/API-Client_LOG.txt");
+            Client = new SpacePortApiClient(@"https://localhost:5001/", Path.GetTempPath() + "API-Client_LOG.txt");
         }
         public static readonly SpacePortApiClient Client;
         public static Account _account { get; set; } = new();

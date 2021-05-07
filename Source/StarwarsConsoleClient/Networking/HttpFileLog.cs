@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace StarwarsConsoleClient.Networking
@@ -7,10 +8,22 @@ namespace StarwarsConsoleClient.Networking
     {
         public HttpFileLog(string filePath)
         {
-            _filePath = filePath;
+            FilePath = filePath;
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllLines(filePath,
+                    new string[]
+                    {
+                        "HTTP-FILE-LOG-ENABLED"
+                    });
+            }
         }
-        private string _filePath;
-        private void Append(string line) => File.AppendAllLines(_filePath, new[] { line });
+        public string FilePath { get; private set; }
+        private static string JsonFormat(object obj) {
+          string json = JsonConvert.SerializeObject(obj);
+            return json.Replace(",", "," + _n).Replace("{", "{" + _n).Replace("\\", "").Replace("}", _n + "}");
+        }
+        private void Append(string line) => File.AppendAllLines(FilePath, new[] { line });
         private void NewLines(int lines)
         {
             string text = string.Empty;
@@ -22,6 +35,7 @@ namespace StarwarsConsoleClient.Networking
             }
             Append(text);
         }
+        private static string _n = Environment.NewLine;
         private void Delimiter()
         {
             Append("------------------------------");
@@ -39,14 +53,12 @@ namespace StarwarsConsoleClient.Networking
         {
             Delimiter();
             Append(data.TimeStamp);
-            Append($"Request: {data.RequestMethod} {data.RequestUri}");
+            Append($"{data.RequestMethod} {data.RequestUri}");
             Append("Response Code: " + data.StatusCode);
-            Append("Response Headers: " + data.ResponseContentString);
-            Append("Response string: " + data.ResponseContentString);
-            Append(data.ResponseHeaders);
-            NewLines(2);
-            Append($"Request string: {data.RequestContentString}");
-            Append(data.RequestHeaders);
+            Append("Response string: " + JsonFormat(data.ResponseContentString));
+            Append("Response Headers: " + _n + data.ResponseHeaders.ToString());
+            Append($"Request string: {JsonFormat(data.RequestContentString)}");
+            Append("Request Headers: " + JsonFormat(data.RequestHeaders));
             Delimiter();
             NewLines(2);
         }

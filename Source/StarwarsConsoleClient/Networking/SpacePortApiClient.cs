@@ -2,6 +2,7 @@
 using StarwarsConsoleClient.Main;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,9 +19,12 @@ namespace StarwarsConsoleClient.Networking
             var client = new HttpClient();
             var log = new HttpFileLog(logFile);
             client.BaseAddress = new Uri(baseUrl);
+            _log = log;
             _client = client;
         }
         private string _token;
+
+        public void OpenLogFile() => Process.Start("notepad.exe", _log.FilePath);
 
         #region Hard coded string endpoints
         private readonly string _registerEndpoint = @"/api/Account/Register";
@@ -48,7 +52,7 @@ namespace StarwarsConsoleClient.Networking
             var response = await _client.PostAsync(_loginEndpoint, data).ConfigureAwait(continueOnCapturedContext: false);
             return response;
         }
-        public async Task<bool> Register(string accountName, string password)
+        public async Task Login(string accountName, string password)
         {
             var response = await JsonPostRequest(_loginEndpoint, new
             {
@@ -56,28 +60,23 @@ namespace StarwarsConsoleClient.Networking
                 password = password
             });
             var responseData = await ClientResponseData.ToData(response);
-
-            if (!response.IsSuccessStatusCode) return false;
+            _log.LogClientData(responseData);
+            //if (!response.IsSuccessStatusCode) return false;
             var token = responseData.GetResponseValueWithKey("token");
             _token = token;
-
-            return token != null;
         }
-        public async Task<bool> Login(string accountName, string password)
-        {
-            var response = await JsonPostRequest(_loginEndpoint, new
-            {
-                username = accountName,
-                password = password
-            });
-            var responseData = await ClientResponseData.ToData(response);
-
-            if (!response.IsSuccessStatusCode) return false;
-           var token = responseData.GetResponseValueWithKey("token");
-            _token = token;
-
-            return token != null;
-        }
+        //public async Task Login(string accountName, string password)
+        //{
+        //    var response = await JsonPostRequest(_loginEndpoint, new
+        //    {
+        //        username = accountName,
+        //        password = password
+        //    });
+        //    var responseData = await ClientResponseData.ToData(response);
+        //    var responsevalues = responseData.
+        //   var token = responseData.GetResponseValueWithKey("token");
+        //    _token = token;
+        //}
     }
 
 }

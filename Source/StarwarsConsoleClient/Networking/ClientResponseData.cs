@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace StarwarsConsoleClient.Networking
@@ -11,14 +12,13 @@ namespace StarwarsConsoleClient.Networking
         public string TimeStamp { get; private set; }
         public string StatusCode { get; private set; }
         public bool IsSuccessStatusCode { get; private set; }
-        public string RequestHeaders { get; private set; }
+        public HttpRequestHeaders RequestHeaders { get; private set; }
+        public HttpResponseHeaders ResponseHeaders { get; private set; }
         public string RequestMethod { get; private set; }
         public string RequestUri { get; private set; }
         public string RequestContentString { get; private set; }
-        public string ResponseHeaders { get; private set; }
-        public string ResponseContentString { get { return JsonFormat(_responseContentString); } }
-        private string _responseContentString;
-        public T ResponseAsObject<T>() => JsonConvert.DeserializeObject<T>(_responseContentString);
+        public string ResponseContentString { get; set; }
+        public T ResponseAsObject<T>() => JsonConvert.DeserializeObject<T>(ResponseContentString);
         public string GetResponseValueWithKey(string key)
         {
             var loginResponseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(ResponseContentString);
@@ -32,9 +32,9 @@ namespace StarwarsConsoleClient.Networking
             ClientResponseData clientResponseData = null;
             using (response)
             {
+                var responseContentString = await response.Content.ReadAsStringAsync();
                 var request = response.RequestMessage;
                 var requestContentString = await request.Content.ReadAsStringAsync();
-                var responseContentString = await response.Content.ReadAsStringAsync();
 
                 clientResponseData = new ClientResponseData()
                 {
@@ -42,16 +42,15 @@ namespace StarwarsConsoleClient.Networking
                     StatusCode = response.StatusCode.ToString(),
                     RequestMethod = request.Method.Method,
                     RequestUri = request.RequestUri.AbsoluteUri,
-                    RequestHeaders = JsonFormat(request.Headers),
-                    RequestContentString = JsonFormat(requestContentString),
-                    _responseContentString = responseContentString,
-                    ResponseHeaders = JsonFormat(response.Headers),
+                    RequestHeaders = request.Headers,
+                    ResponseContentString = responseContentString,
+                    RequestContentString = requestContentString,
+                    ResponseHeaders = response.Headers,
                     IsSuccessStatusCode = response.IsSuccessStatusCode,
                 };
             }
             return clientResponseData;
         }
-        private static string JsonFormat(object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
     }
 }
 

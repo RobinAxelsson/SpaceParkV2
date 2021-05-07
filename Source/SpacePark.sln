@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceParkTests", "SpacePark
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpacePark_ModelsDB", "SpacePark_ModelsDB\SpacePark_ModelsDB.csproj", "{462967A0-D8D4-4BB9-B5AF-6AB417717F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarwarsConsoleClient", "StarwarsConsoleClient\StarwarsConsoleClient.csproj", "{3F0A7BF6-66B9-40A4-AB26-9F5FD7526939}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarwarsConsoleClient", "StarwarsConsoleClient\StarwarsConsoleClient.csproj", "{3F0A7BF6-66B9-40A4-AB26-9F5FD7526939}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
