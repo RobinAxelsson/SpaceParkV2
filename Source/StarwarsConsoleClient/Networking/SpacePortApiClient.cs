@@ -32,9 +32,9 @@ namespace StarwarsConsoleClient.Networking
                 public static readonly string login =               @"/api/Account/Login";
                 public static readonly string changeSpaceShip =     @"/api/Account/ChangeSpaceShip";
                 public static readonly string getHomeworld =        @"​/api​/Account​/GetHomeworld";
-                public static readonly string Ships =               @"​/api​/Account​/Ships";
-                public static readonly string MyShip =              @"api/Account/MySpaceShip";
-                public static readonly string MyData =              @"api/Account/MyData";
+                public static readonly string Ships =               @"​/api/Account/Ships?maxLength=150";
+                public static readonly string MyShip =              @"/api/Account/MySpaceShip";
+                public static readonly string MyData =              @"/api/Account/MyData";
             }
             public static class Parking
             {

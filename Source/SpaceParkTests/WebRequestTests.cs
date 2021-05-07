@@ -217,7 +217,7 @@ namespace SpaceParkTests
             var parkJson = JsonConvert.SerializeObject(new
             {
                 minutes = 10,
-                spacePortId = 1
+                spacePortName = "PortRoyal"
             });
             var parkBodyData = new StringContent(parkJson, Encoding.UTF8, "application/json");
 
