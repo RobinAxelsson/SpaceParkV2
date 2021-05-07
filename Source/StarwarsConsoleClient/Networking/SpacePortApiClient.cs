@@ -149,12 +149,12 @@ namespace StarwarsConsoleClient.Networking
             var ships = JsonConvert.DeserializeObject<IEnumerable<SpaceShip>>(responseContentString);
             return ships;
         }
-        public async Task<int> GetPriceAsync(string uri)
+        public async Task<decimal> GetPriceAsync(string uri)
         {
 
             var response = await GetRequestAsync(uri);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var price = JsonConvert.DeserializeObject<int>(responseContentString);
+            var price = JsonConvert.DeserializeObject<decimal>(responseContentString);
             return price;
         }
         #endregion

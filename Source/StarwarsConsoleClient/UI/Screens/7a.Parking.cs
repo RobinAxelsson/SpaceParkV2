@@ -46,9 +46,10 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            var spacePortList = await Client.GetSpacePortsAsync("");
-           // var spacePort = spacePortList.ToList().Where()
-      //      Console.Write(await Client.GetPriceAsync("https://localhost:44350/api/Parking/Price?spacePortName=" + &spaceShipModel=X-Wing&minutes=543")); //TODO placeholder 9999
+            var pricePerHour = await Client.GetPriceAsync("https://localhost:44350/api/Parking/Price?spacePortName=" +
+                UserData.SelectedSpacePort.name + "&spaceShipModel=" + UserData.SpaceShip.Model + "&minutes=60");
+            Console.Write(Math.Round(pricePerHour, 2));
+            //TODO placeholder 9999
             LineTools.SetCursor(shipLengthXY);
             Console.Write(UserData.SpaceShip.ShipLength);
 
@@ -57,9 +58,9 @@ namespace StarwarsConsoleClient.UI.Screens
 
             Option menuSel;
             double hours;
+            
 
-
-            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => (5));
+            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => (Asodjaksldhnjsakdsada));
                 //ParkingManagement.CalculatePrice);
 
             if (openNext.isOpen == false)
@@ -70,6 +71,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             do
             {
+                
                 hours = timeGetter.GetMinutes(UserData.SpaceShip);
                 menuSel = selectionList.GetSelection();
 
