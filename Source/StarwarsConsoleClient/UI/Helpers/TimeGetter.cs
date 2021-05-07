@@ -6,7 +6,7 @@ namespace StarwarsConsoleClient.UI
     public class TimeGetter
     {
         public TimeGetter((int X, int Y) hourXY, (int X, int Y) priceXY, int maxValue,
-            Func<double, decimal> calculate)
+            Func<double, double> calculate)
         {
             HourXY = hourXY;
             PriceXY = priceXY;

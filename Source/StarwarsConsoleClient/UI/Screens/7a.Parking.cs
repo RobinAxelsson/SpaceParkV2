@@ -58,10 +58,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             Option menuSel;
             double hours;
-            
-
-            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => (Asodjaksldhnjsakdsada));
-                //ParkingManagement.CalculatePrice);
+            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => pricePerHour * x);
 
             if (openNext.isOpen == false)
             {

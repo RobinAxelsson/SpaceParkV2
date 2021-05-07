@@ -149,12 +149,12 @@ namespace StarwarsConsoleClient.Networking
             var ships = JsonConvert.DeserializeObject<IEnumerable<SpaceShip>>(responseContentString);
             return ships;
         }
-        public async Task<decimal> GetPriceAsync(string uri)
+        public async Task<double> GetPriceAsync(string uri)
         {
 
             var response = await GetRequestAsync(uri);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var price = JsonConvert.DeserializeObject<decimal>(responseContentString);
+            var price = JsonConvert.DeserializeObject<double>(responseContentString);
             return price;
         }
         #endregion
@@ -177,12 +177,12 @@ namespace StarwarsConsoleClient.Networking
             var ports = JsonConvert.DeserializeObject<IEnumerable<SpacePort>>(responseContentString);
             return ports;
         }
-        public async Task<decimal> GetPriceAsync(int spacePortId, string spaceShipModel, double minutes)
+        public async Task<double> GetPriceAsync(int spacePortId, string spaceShipModel, double minutes)
         {
             var query = QueryStringParse(new { spacePortId, spaceShipModel, minutes });
             var response = await GetRequestAsync(EndPoints.Parking.parkingPrice, query);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var price = decimal.Parse(responseContentString);
+            var price = double.Parse(responseContentString);
             return price;
         }
         #endregion
