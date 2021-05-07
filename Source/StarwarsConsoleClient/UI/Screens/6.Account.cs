@@ -13,7 +13,7 @@ namespace StarwarsConsoleClient.UI.Screens
         {
             var myDataPromise = Client.MyDataAsync();
             var myShipPromise = Client.MySpaceShipAsync();
-            var myHomeworldPromise = Client.GetHomeworldAsync();
+            var myHomeworldPromise = Client.GetHomeworldAsync("https://localhost:44350/api/Account/GetHomeworld");
 
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/6.Account.txt");

@@ -115,17 +115,18 @@ namespace StarwarsConsoleClient.Networking
             var val = loginResponseValuePairs.GetValueOrDefault(key);
             return val;
         }
-        public async Task<bool> ChangeSpaceShipAsync(string spaceshipModel)
+        public async Task<bool> ChangeSpaceShipAsync(string uri, string spaceshipModel)
         {
-            var response = await JsonPostRequestAsync(EndPoints.Account.changeSpaceShip + "/" + spaceshipModel, null);
+            var response = await JsonPostRequestAsync(uri + spaceshipModel, null);
             return response.IsSuccessStatusCode;
         }
-        public async Task<Homeworld> GetHomeworldAsync()
+        public async Task<Homeworld> GetHomeworldAsync(string uri)
         {
-            var response = await JsonPostRequestAsync(EndPoints.Account.getHomeworld, null);
-            var responseContentString = await response.Content.ReadAsStringAsync();
-            var homeworld = JsonConvert.DeserializeObject<Homeworld>(responseContentString);
-            return homeworld;
+            var response = await JsonPostRequestAsync(uri, new
+            {
+            });
+            var homeplanet = JsonConvert.DeserializeObject<Homeworld>(await response.Content.ReadAsStringAsync());
+            return homeplanet;
         }
         public async Task<SpaceShip> MySpaceShipAsync()
         {

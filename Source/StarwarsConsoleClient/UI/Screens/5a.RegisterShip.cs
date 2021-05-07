@@ -30,7 +30,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             if (reRegister)
             {
-                var status = await Client.ChangeSpaceShipAsync(ship.Model);
+                var status = await Client.ChangeSpaceShipAsync("https://localhost:44350/api/Account/ChangeSpaceShip?spaceshipModel=", ship.Model);
                 return Option.Account;
             }
             

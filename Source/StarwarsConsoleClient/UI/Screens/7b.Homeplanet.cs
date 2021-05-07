@@ -26,7 +26,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var climate = new LineData(props[4]);
             var pop = new LineData(props[5]);
 
-            var homeplanet = await Client.GetHomeworldAsync();
+            var homeplanet = await Client.GetHomeworldAsync("https://localhost:44350/api/Account/GetHomeworld");
             Console.ForegroundColor = ConsoleColor.Green;
             home.Update(homeplanet.Name);
             rotation.Update(homeplanet.RotationPeriod);
