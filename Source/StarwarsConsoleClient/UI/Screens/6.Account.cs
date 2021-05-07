@@ -29,6 +29,7 @@ namespace StarwarsConsoleClient.UI.Screens
             selectionList.GetCharPositions(drawables);
             selectionList.AddSelections(new[]
             {
+                Option.SelectSpacePort,
                 Option.Parking,
                 Option.Receipts,
                 Option.ReRegisterShip,

@@ -16,6 +16,7 @@
     <None Remove="UI\maps\7.Homeplanet.txt" />
     <None Remove="UI\maps\7.Parking.txt" />
     <None Remove="UI\maps\7.Receipts.txt" />
+    <None Remove="UI\maps\7.SelectSpacePort.txt" />
     <None Remove="UI\maps\8.Exit.txt" />
   </ItemGroup>
 
@@ -39,6 +40,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="UI\maps\6.Account.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\maps\7.SelectSpacePort.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="UI\maps\7.Homeplanet.txt">

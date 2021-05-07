@@ -8,7 +8,9 @@
 
 User: ¤
 Ship: ¤
+Selected Space Port: ¤
    _____
+  $ Change Space Port
   $ Park
   $ Check Receipts
   $ Re-register ship

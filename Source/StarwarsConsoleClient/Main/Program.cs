@@ -18,7 +18,7 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:44350/", LogUri);
+            Client = new SpacePortApiClient(@"https://localhost:5001/", LogUri);
         }
         public static readonly SpacePortApiClient Client;
 

@@ -4,6 +4,7 @@
     {
         public static Person Person { get; set; }
         public static SpaceShip SpaceShip { get; set; }
+        public static SpacePort SelectedSpacePort { get; set; }
         public static string AccountName { get; set; }
         public static string tryFullName { get; set; }
         public static string Password { get; set; }
