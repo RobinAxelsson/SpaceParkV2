@@ -1,17 +1,13 @@
 using StarwarsConsoleClient.Networking;
-using StarwarsConsoleClient.UI.Screens;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace StarwarsConsoleClient.Main
 {
     public static class TestMain
     {
-
         static TestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
@@ -20,7 +16,7 @@ namespace StarwarsConsoleClient.Main
         public static readonly SpacePortApiClient Client;
         public static (string accountName, string password) _namepass { get; set; }
 
-        public static async Task Main(string[] args)
+        public static async Task TestMainMain(string[] args)
         {
             Console.WriteLine("Tap to login again!");
             Console.ReadKey();
@@ -29,12 +25,10 @@ namespace StarwarsConsoleClient.Main
             Console.WriteLine("---End of message---");
             Client.OpenLogFile();
             Console.ReadLine();
-
         }
-
         private static async Task LoginDarthMaul()
         {
-            await Client.Login("BigRed", "Maul@123");
+            await Client.LoginAsync("BigRed", "Maul@123");
         }
     }
 }

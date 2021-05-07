@@ -5,9 +5,24 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace StarwarsConsoleClient.Main
 {
+    public static class UserData
+    {
+        public static string PersonName { get; set; }
+        public static SpaceShip SpaceShip { get; set; }
+        public static string AccountName { get; set; }
+        public static string Password { get; set; }
+        public static void ClearData()
+        {
+            PersonName = null;
+            SpaceShip = null;
+            AccountName = null;
+            Password = null;
+        }
+    }
     public static class Program
     {
         public const ConsoleColor ForegroundColor = ConsoleColor.Green;
@@ -19,10 +34,8 @@ namespace StarwarsConsoleClient.Main
             Client = new SpacePortApiClient(@"https://localhost:5001/", Path.GetTempPath() + "API-Client_LOG.txt");
         }
         public static readonly SpacePortApiClient Client;
-        public static Account _account { get; set; } = new();
-        public static (string accountName, string password) _namepass { get; set; }
 
-        private static void MainDisabled(string[] args)
+        private static async Task Main(string[] args)
         {
             ShowWindow(ThisConsole, 3);
             Console.CursorVisible = false;
@@ -49,7 +62,7 @@ namespace StarwarsConsoleClient.Main
                         option = Screen.Registration();
                         break;
                     case Option.RegisterShip:
-                        option = Screen.RegisterShip();
+                        option = await Screen.RegisterShip();
                         break;
                     case Option.Account:
                         option = Screen.Account();
@@ -66,13 +79,14 @@ namespace StarwarsConsoleClient.Main
                     case Option.Exit:
                         Screen.Exit();
                         Thread.Sleep(2000);
+                        Client.OpenLogFile();
                         Environment.Exit(0);
                         break;
                     case Option.ReRegisterShip:
-                        option = Screen.RegisterShip(true);
+                        option = await Screen.RegisterShip(true);
                         break;
                     case Option.Logout:
-                        _account = null;
+                        UserData.ClearData();
                         option = Screen.Start();
                         break;
                     default:

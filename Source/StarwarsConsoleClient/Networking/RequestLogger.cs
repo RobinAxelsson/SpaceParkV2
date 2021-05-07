@@ -4,9 +4,9 @@ using System.IO;
 
 namespace StarwarsConsoleClient.Networking
 {
-    public class HttpFileLog
+    public class RequestLogger
     {
-        public HttpFileLog(string filePath)
+        public RequestLogger(string filePath)
         {
             FilePath = filePath;
             if (!File.Exists(FilePath))
