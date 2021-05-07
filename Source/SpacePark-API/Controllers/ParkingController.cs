@@ -25,7 +25,7 @@ namespace SpacePark_API.Controllers
         [Authorize]
         [HttpPost]
         [Route("api/[controller]/Park")]
-        public IActionResult Park([FromBody] ParkingModelId model)
+        public IActionResult Park([FromBody] ParkingModel model)
         {
             var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Id == model.SpacePortId);
             var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
@@ -34,12 +34,15 @@ namespace SpacePark_API.Controllers
                 .Account;
             if (account == null || spacePort == null)
                 return NotFound();
+            if (!checkParkingStatus(spacePort))
+                return Conflict($"The Spaceport is currently full and will be available in");
+
             var price = spacePort.CalculatePrice(account.SpaceShip, model.Minutes);
             var receipt = new Receipt
             {
                 Price = price,
-                StartTime = DateTime.Now.ToString("d"),
-                EndTime = DateTime.Now.AddMinutes(model.Minutes).ToString("d"),
+                StartTime = DateTime.Now.ToString("g"),
+                EndTime = DateTime.Now.AddMinutes(model.Minutes).ToString("g"),
                 SpacePort = spacePort,
                 Account = account
             };
@@ -54,7 +57,20 @@ namespace SpacePark_API.Controllers
                 PurchasedBy = account.Person.Name
             });
         }
+       
+        [HttpGet]
+        [Route("/api/[controller]/IsAvailable")]
+        public IActionResult IsOpen(string spacePortName)
+        {
+            var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Name == spacePortName);
+            if (spacePort == null)
+                return NotFound($"Spaceport with the name {spacePortName} was not found.");
 
+            if (!spacePort.Enabled)
+                return Conflict($"Spaceport with the name {spacePortName} is closed.");
+            bool isOpen = checkParkingStatus(spacePort);
+            return Ok(isOpen);
+        }
         [Authorize]
         [HttpPost]
         [Route("api/[controller]/GetSpacePorts")]
@@ -72,7 +88,33 @@ namespace SpacePark_API.Controllers
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }
+        private bool checkParkingStatus(SpacePort spacePort)
+        {
 
-      
+            var ongoingParkings = new List<Receipt>();
+            foreach (var receipts in _repository.Receipts.Include(r => r.SpacePort).Where(r => r.SpacePort.Name == spacePort.Name))
+                if (DateTime.Parse(receipts.EndTime) > DateTime.Now)
+                    ongoingParkings.Add(receipts);
+            var nextAvailable = DateTime.Now;
+            var isOpen = false;
+            if (ongoingParkings.Count >= spacePort.ParkingSpots)
+            {
+                //Setting nextAvailable 10 years ahead so the loop will always start running.
+                nextAvailable = DateTime.Now.AddYears(10);
+                var cachedNow = DateTime.Now;
+                //Caching DateTimeNow in case loops takes longer than expected, to ensure that time moving forward doesn't break the loop.
+                foreach (var receipt in ongoingParkings)
+                {
+                    var endTime = DateTime.Parse(receipt.EndTime);
+                    if (endTime > cachedNow && endTime < nextAvailable) nextAvailable = endTime;
+                }
+            }
+            else
+            {
+                isOpen = true;
+            }
+            return isOpen;
+        }
+
     }
 }
