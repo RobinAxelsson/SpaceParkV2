@@ -62,7 +62,6 @@ namespace StarwarsConsoleClient.Main
                     case Option.Exit:
                         Screen.Exit();
                         Thread.Sleep(2000);
-                        Client.OpenLogFile();
                         Environment.Exit(0);
                         break;
                     case Option.ReRegisterShip:

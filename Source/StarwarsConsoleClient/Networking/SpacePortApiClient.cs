@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,17 +17,12 @@ namespace StarwarsConsoleClient.Networking
     public partial class SpacePortApiClient
     {
         private HttpClient _client;
-        private RequestLogger _log;
         public SpacePortApiClient(string baseUrl, string logFile)
         {
             var client = new HttpClient();
-            var log = new RequestLogger(logFile);
             client.BaseAddress = new Uri(baseUrl);
-            _log = log;
             _client = client;
         }
-
-        public void OpenLogFile() => Process.Start("notepad.exe", _log.FilePath);
 
         private static class EndPoints
         {
@@ -97,8 +93,7 @@ namespace StarwarsConsoleClient.Networking
                 password,
                 spaceShipModel,
             });
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
+
             return response.IsSuccessStatusCode;
         }
         public async Task<bool> LoginAsync(string accountName, string password)
@@ -108,49 +103,50 @@ namespace StarwarsConsoleClient.Networking
                 username = accountName,
                 password = password
             });
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var token = responseData.GetResponseValueWithKey("token");
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var token = GetResponseValueWithKey("token", responseContentString);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            return responseData?.IsStatusCode ?? false;
+
+            return response.IsSuccessStatusCode;
         }
+        private string GetResponseValueWithKey(string key, string responseContentString)
+        {
+            var loginResponseValuePairs = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseContentString);
+            var val = loginResponseValuePairs.GetValueOrDefault(key);
+            return val;
+        }
+        private T ParseResponseString<T>(string responseContentString) => JsonConvert.DeserializeObject<T>(responseContentString);
         public async Task<bool> ChangeSpaceShipAsync(string spaceshipModel)
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.changeSpaceShip + "/" + spaceshipModel, null);
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
             return response.IsSuccessStatusCode;
         }
         public async Task<Homeworld> GetHomeworldAsync()
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.getHomeworld, null);
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var homeworld = responseData.ResponseAsObject<Homeworld>();
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var homeworld = ParseResponseString<Homeworld>(responseContentString);
             return homeworld;
         }
         public async Task<SpaceShip> MySpaceShipAsync()
         {
-            var response = await JsonPostRequestAsync(EndPoints.Account.MyShip, null); //
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var spaceShip = responseData.ResponseAsObject<SpaceShip>();
+            var response = await JsonPostRequestAsync(EndPoints.Account.MyShip, null);
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var spaceShip = ParseResponseString<SpaceShip>(responseContentString);
             return spaceShip;
         }
         public async Task<Person> MyDataAsync()
         {
-            var response = await JsonPostRequestAsync(EndPoints.Account.MyData, null); //
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var person = responseData.ResponseAsObject<Person>();
+            var response = await JsonPostRequestAsync(EndPoints.Account.MyData, null);
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var person = ParseResponseString<Person>(responseContentString);
             return person;
         }
         public async Task<IEnumerable<SpaceShip>> GetShipsAsync()
         {
             var response = await GetRequestAsync(EndPoints.Account.Ships);
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var ships = responseData.ResponseAsObject<IEnumerable<SpaceShip>>();
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var ships = ParseResponseString<IEnumerable<SpaceShip>>(responseContentString);
             return ships;
         }
 
@@ -163,25 +159,21 @@ namespace StarwarsConsoleClient.Networking
                 minutes,
                 spacePortId
             });
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
             return response.IsSuccessStatusCode;
         }
         public async Task<IEnumerable<SpacePort>> GetSpacePortsAsync()
         {
             var response = await GetRequestAsync(EndPoints.Parking.getSpacePorts);
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var ships = responseData.ResponseAsObject<IEnumerable<SpacePort>>();
-            return ships;
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var ports = ParseResponseString<IEnumerable<SpacePort>>(responseContentString);
+            return ports;
         }
         public async Task<decimal> GetPriceAsync(int spacePortId, string spaceShipModel, double minutes)
         {
             var query = QueryStringParse(new { spacePortId, spaceShipModel, minutes });
             var response = await GetRequestAsync(EndPoints.Parking.parkingPrice, query);
-            var responseData = await ClientResponseData.ToData(response);
-            _log.LogClientData(responseData);
-            var price = decimal.Parse(responseData.ResponseContentString);
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var price = decimal.Parse(responseContentString);
             return price;
         }
         #endregion
