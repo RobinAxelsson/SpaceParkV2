@@ -226,10 +226,10 @@ namespace SpaceParkTests
             if (!loginResponse.IsSuccessStatusCode) throw new Exception("Should get 200");
 
             var parkResponseText = await parkResponse.Content.ReadAsStringAsync();
-            var parkResponseProps = JsonConvert.DeserializeObject<Dictionary<string, string>>(parkResponseText);
+            var parkResponseProps = JsonConvert.DeserializeObject<Receipt>(parkResponseText);
 
-            string expected = spacePort.CalculatePrice(spaceShip, 10).ToString();
-            Assert.True(parkResponseProps.TryGetValue("price", out expected));
+            var expected = spacePort.CalculatePrice(spaceShip, 10);
+            Assert.Equal(expected, parkResponseProps.Price);
 
         }
 
