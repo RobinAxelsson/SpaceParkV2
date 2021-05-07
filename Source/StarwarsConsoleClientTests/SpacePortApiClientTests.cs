@@ -6,7 +6,7 @@ using Xunit;
 
 namespace StarwarsConsoleClientTests
 {
-    public class SpacePortApiClientTests : IDisposable
+    public class SpacePortApiClientTests
     {
         private SpacePortApiClient Client;
         private bool disposedValue;
@@ -40,11 +40,6 @@ namespace StarwarsConsoleClientTests
                 "BadMotherFucker",
                 "Sparkels@123");
             Assert.True(response);
-        }
-
-        public void Dispose()
-        {
-            Client.OpenLogFile();
         }
     }
 }
