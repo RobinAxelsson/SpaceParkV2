@@ -168,9 +168,11 @@ namespace StarwarsConsoleClient.Networking
             });
             return response.IsSuccessStatusCode;
         }
-        public async Task<IEnumerable<SpacePort>> GetSpacePortsAsync()
+        public async Task<IEnumerable<SpacePort>> GetSpacePortsAsync(string uri)
         {
-            var response = await GetRequestAsync(EndPoints.Parking.getSpacePorts);
+            var response = await JsonPostRequestAsync(uri, new
+            {
+            });
             var responseContentString = await response.Content.ReadAsStringAsync();
             var ports = JsonConvert.DeserializeObject<IEnumerable<SpacePort>>(responseContentString);
             return ports;

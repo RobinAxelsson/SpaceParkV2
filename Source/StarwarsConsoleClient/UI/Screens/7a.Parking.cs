@@ -46,7 +46,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            var spacePortList = await Client.GetSpacePortsAsync();
+            var spacePortList = await Client.GetSpacePortsAsync("");
            // var spacePort = spacePortList.ToList().Where()
       //      Console.Write(await Client.GetPriceAsync("https://localhost:44350/api/Parking/Price?spacePortName=" + &spaceShipModel=X-Wing&minutes=543")); //TODO placeholder 9999
             LineTools.SetCursor(shipLengthXY);

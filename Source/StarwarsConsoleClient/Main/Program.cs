@@ -18,7 +18,7 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:5001/", LogUri);
+            Client = new SpacePortApiClient(@"https://localhost:44350/", LogUri);
         }
         public static readonly SpacePortApiClient Client;
 
@@ -70,6 +70,9 @@ namespace StarwarsConsoleClient.Main
                     case Option.Logout:
                         UserData.ClearData();
                         option = Screen.Start();
+                        break;
+                    case Option.SelectSpacePort:
+                        option = await Screen.SelectSpacePort();
                         break;
                     default:
                         throw new Exception("Something wrong with the options");

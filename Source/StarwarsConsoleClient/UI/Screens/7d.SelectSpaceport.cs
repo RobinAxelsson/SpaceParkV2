@@ -12,10 +12,10 @@ namespace StarwarsConsoleClient.UI.Screens
         public static async Task<Option> SelectSpacePort()
         {
             ConsoleWriter.ClearScreen();
-            var lines = File.ReadAllLines(@"/UI/maps/7d.SelectSpaceport.cs");
+            var lines = File.ReadAllLines(@"UI/maps/7.SelectSpacePort.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
             var nextLine = drawables.Max(x => x.CoordinateY);
-            var ports = await Client.GetSpacePortsAsync();
+            var ports = await Client.GetSpacePortsAsync("https://localhost:44350/api/Parking/GetSpacePorts");
             var portLines = ports.Select(x => "$ " + x.name).ToArray();
             drawables.AddRange(TextEditor.Add.DrawablesAt(portLines, nextLine + 3));
             TextEditor.Center.ToScreen(drawables, Console.WindowWidth, Console.WindowHeight);

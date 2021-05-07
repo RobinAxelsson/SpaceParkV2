@@ -14,7 +14,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var myDataPromise = Client.MyDataAsync();
             var myShipPromise = Client.MySpaceShipAsync();
             var myHomeworldPromise = Client.GetHomeworldAsync("https://localhost:44350/api/Account/GetHomeworld");
-
+            var myPortsPromise = Client.GetSpacePortsAsync("https://localhost:44350/api/Parking/GetSpacePorts");
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/6.Account.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
@@ -24,7 +24,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             var nameCoord = parameterCoords[0];
             var shipCoord = parameterCoords[1];
-
+            var SpacePortCoord = parameterCoords[2];
             var selectionList = new SelectionList<Option>(ForegroundColor, '$');
             selectionList.GetCharPositions(drawables);
             selectionList.AddSelections(new[]
@@ -43,12 +43,21 @@ namespace StarwarsConsoleClient.UI.Screens
             UserData.Person = await myDataPromise;
             UserData.SpaceShip = await myShipPromise;
             UserData.Person.Homeplanet = await myHomeworldPromise;
-
+            var portList = await myPortsPromise;
+            
             Console.ForegroundColor = ConsoleColor.Green;
             LineTools.SetCursor(nameCoord);
             Console.Write(UserData.Person.Name);
             LineTools.SetCursor(shipCoord);
             Console.Write(UserData.SpaceShip.Model);
+            LineTools.SetCursor(SpacePortCoord);
+            if (UserData.SelectedSpacePort == null)
+            {
+                UserData.SelectedSpacePort = portList.ToArray()[0];
+                Console.Write(UserData.SelectedSpacePort.name);
+            }
+            else
+                Console.Write(UserData.SelectedSpacePort.name);
             return selectionList.GetSelection();
         }
     }
