@@ -115,7 +115,6 @@ namespace StarwarsConsoleClient.Networking
             var val = loginResponseValuePairs.GetValueOrDefault(key);
             return val;
         }
-        private T ParseResponseString<T>(string responseContentString) => JsonConvert.DeserializeObject<T>(responseContentString);
         public async Task<bool> ChangeSpaceShipAsync(string spaceshipModel)
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.changeSpaceShip + "/" + spaceshipModel, null);
@@ -125,28 +124,28 @@ namespace StarwarsConsoleClient.Networking
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.getHomeworld, null);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var homeworld = ParseResponseString<Homeworld>(responseContentString);
+            var homeworld = JsonConvert.DeserializeObject<Homeworld>(responseContentString);
             return homeworld;
         }
         public async Task<SpaceShip> MySpaceShipAsync()
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.MyShip, null);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var spaceShip = ParseResponseString<SpaceShip>(responseContentString);
+            var spaceShip = JsonConvert.DeserializeObject<SpaceShip>(responseContentString);
             return spaceShip;
         }
         public async Task<Person> MyDataAsync()
         {
             var response = await JsonPostRequestAsync(EndPoints.Account.MyData, null);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var person = ParseResponseString<Person>(responseContentString);
+            var person = JsonConvert.DeserializeObject<Person>(responseContentString);
             return person;
         }
         public async Task<IEnumerable<SpaceShip>> GetShipsAsync()
         {
             var response = await GetRequestAsync(EndPoints.Account.Ships);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var ships = ParseResponseString<IEnumerable<SpaceShip>>(responseContentString);
+            var ships = JsonConvert.DeserializeObject<IEnumerable<SpaceShip>>(responseContentString);
             return ships;
         }
 
@@ -165,7 +164,7 @@ namespace StarwarsConsoleClient.Networking
         {
             var response = await GetRequestAsync(EndPoints.Parking.getSpacePorts);
             var responseContentString = await response.Content.ReadAsStringAsync();
-            var ports = ParseResponseString<IEnumerable<SpacePort>>(responseContentString);
+            var ports = JsonConvert.DeserializeObject<IEnumerable<SpacePort>>(responseContentString);
             return ports;
         }
         public async Task<decimal> GetPriceAsync(int spacePortId, string spaceShipModel, double minutes)
@@ -177,9 +176,6 @@ namespace StarwarsConsoleClient.Networking
             return price;
         }
         #endregion
-        
-        
     }
-
 }
 
