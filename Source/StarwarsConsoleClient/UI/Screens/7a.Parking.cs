@@ -3,12 +3,13 @@ using StarwarsConsoleClient.Main;
 using System;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
+using static StarwarsConsoleClient.Main.Program;
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
-        public static Option Parking()
+        public static async Task<Option> Parking()
         {
             ConsoleWriter.ClearScreen();
 
@@ -33,6 +34,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var calculatedPriceXY = props[3];
             var enterHoursXY = props[4];
             var receiptXY = props[5];
+            
             var openNext = ParkingManagement.CheckParkingStatus(); //TODO parkingstatus
 
             Console.ForegroundColor = ConsoleColor.Green;
@@ -44,7 +46,9 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            Console.Write(ParkingManagement.CalculatePrice(UserData.SpaceShip, 1, 9999) * 60); //TODO placeholder 9999
+            var spacePortList = await Client.GetSpacePortsAsync();
+           // var spacePort = spacePortList.ToList().Where()
+      //      Console.Write(await Client.GetPriceAsync("https://localhost:44350/api/Parking/Price?spacePortName=" + &spaceShipModel=X-Wing&minutes=543")); //TODO placeholder 9999
             LineTools.SetCursor(shipLengthXY);
             Console.Write(UserData.SpaceShip.ShipLength);
 
