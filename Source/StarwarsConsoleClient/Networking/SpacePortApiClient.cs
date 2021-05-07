@@ -141,14 +141,21 @@ namespace StarwarsConsoleClient.Networking
             var person = JsonConvert.DeserializeObject<Person>(responseContentString);
             return person;
         }
-        public async Task<IEnumerable<SpaceShip>> GetShipsAsync()
+        public async Task<IEnumerable<SpaceShip>> GetShipsAsync(string uri)
         {
-            var response = await GetRequestAsync(EndPoints.Account.Ships);
+            var response = await GetRequestAsync(uri);
             var responseContentString = await response.Content.ReadAsStringAsync();
             var ships = JsonConvert.DeserializeObject<IEnumerable<SpaceShip>>(responseContentString);
             return ships;
         }
+        public async Task<int> GetPriceAsync(string uri)
+        {
 
+            var response = await GetRequestAsync(uri);
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var price = JsonConvert.DeserializeObject<int>(responseContentString);
+            return price;
+        }
         #endregion
         #region Parking Requests
         public async Task<bool> Park(double minutes, int spacePortId)

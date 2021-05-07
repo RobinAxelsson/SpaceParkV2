@@ -82,9 +82,9 @@ namespace SpacePark_API.Controllers
         [Authorize]
         [HttpGet]
         [Route("api/[controller]/Price")]
-        public decimal GetPrice(int spacePortId, string spaceShipModel, double minutes)
+        public decimal GetPrice(string spacePortName, string spaceShipModel, double minutes)
         {
-            var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Id == spacePortId);
+            var spacePort = _repository.SpacePorts.SingleOrDefault(sp => sp.Name == spacePortName);
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }

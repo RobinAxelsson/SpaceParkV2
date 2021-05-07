@@ -51,7 +51,7 @@ namespace StarwarsConsoleClient.Main
                         option = await Screen.Account();
                         break;
                     case Option.Parking:
-                        option = Screen.Parking();
+                        option = await Screen.Parking();
                         break;
                     case Option.Homeplanet:
                         option = await Screen.HomePlanet();
