@@ -49,7 +49,7 @@ namespace SpacePark_API.Controllers
             var account = new Account
             {
                 AccountName = model.AccountName,
-                Password = model.Password, //TODO add password hashing
+                Password = PasswordHashing.HashPassword(model.Password), //TODO add password hashing
                 Person = person,
                 SpaceShip = ship,
                 Role = Role.User
@@ -68,7 +68,7 @@ namespace SpacePark_API.Controllers
                 var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
             if (account == null) return Unauthorized();
 
-            if (account.Password != model.Password || account.AccountName != model.Username) return Unauthorized();
+            if (PasswordHashing.HashPassword(account.Password) != PasswordHashing.HashPassword(model.Password) || account.AccountName != model.Username) return Unauthorized();
             
             var identity = GetClaimsIdentity(account);
             var token = GetJwtToken(identity);
