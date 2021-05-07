@@ -33,10 +33,11 @@ namespace StarwarsConsoleClient.UI.Screens
                 var status = await Client.ChangeSpaceShipAsync(ship.Model);
                 return Option.Account;
             }
+            
+            var response = await Client.RegisterAsync(ship.Model, UserData.tryFullName, UserData.AccountName, UserData.Password);
+            if (response == true) return Option.Login;
 
-            var success = await Client.RegisterAsync(ship.Model, UserData.tryFullName, UserData.AccountName, UserData.Password);
-
-            return success? Option.Login : Option.Start;
+            return Option.Start;
         }
     }
 }

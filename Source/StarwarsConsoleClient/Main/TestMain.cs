@@ -23,7 +23,6 @@ namespace StarwarsConsoleClient.Main
             Console.WriteLine("Logging in...");
             await LoginDarthMaul();
             Console.WriteLine("---End of message---");
-            Client.OpenLogFile();
             Console.ReadLine();
         }
         private static async Task LoginDarthMaul()
