@@ -47,7 +47,9 @@ namespace StarwarsConsoleClient.UI.Screens
                 LineTools.ClearAt(pass2Coord, password2);
             } while (password1 != password2 || accountName.Length <= 5 || password1.Length <= 5);
 
-            _namepass = (accountName, password1);
+            UserData.AccountName = accountName;
+            UserData.Password = accountName;
+
             if (AccountManagement.Exists(accountName, true)) //TODO change to new methods
             {
                 ConsoleWriter.ClearScreen();

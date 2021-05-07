@@ -35,7 +35,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             Console.ForegroundColor = ConsoleColor.Green;
             LineTools.SetCursor(nameCoord);
-            Console.Write(_account.User.Name);
+            Console.Write(User);
             LineTools.SetCursor(shipCoord);
             Console.Write(_account.SpaceShip.Model);
 
