@@ -40,7 +40,7 @@ namespace SpacePark_API.Controllers
             {
                 return NotFound();
             }
-            if (_repository.People.FirstOrDefault(p => p.Name == person.Name) != null)
+            if (_repository.Accounts.FirstOrDefault(a => a.AccountName == model.AccountName) != null)
             {
                 return Forbid();
             }
@@ -68,7 +68,7 @@ namespace SpacePark_API.Controllers
                 var account = _repository.Accounts.FirstOrDefault(x => x.AccountName == model.Username);
             if (account == null) return Unauthorized();
 
-            if (PasswordHashing.HashPassword(account.Password) != PasswordHashing.HashPassword(model.Password) || account.AccountName != model.Username) return Unauthorized();
+            if (account.Password != PasswordHashing.HashPassword(model.Password) || account.AccountName != model.Username) return Unauthorized();
             
             var identity = GetClaimsIdentity(account);
             var token = GetJwtToken(identity);
