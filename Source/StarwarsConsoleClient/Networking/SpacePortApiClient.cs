@@ -112,7 +112,7 @@ namespace StarwarsConsoleClient.Networking
             _log.LogClientData(responseData);
             var token = responseData.GetResponseValueWithKey("token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            return response.IsSuccessStatusCode;
+            return responseData?.IsStatusCode ?? false;
         }
         public async Task<bool> ChangeSpaceShipAsync(string spaceshipModel)
         {

@@ -31,8 +31,18 @@ namespace StarwarsConsoleClient.UI.Screens
             Console.SetCursorPosition(Console.WindowWidth/2-10, Console.WindowHeight/2 - 3);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Validating login...");
-            bool success = await Client.LoginAsync(accountName, password);
-            return success ? Option.Account : Option.Start;
+
+            bool success;
+            try
+            {
+                success = await Client.LoginAsync(accountName, password);
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+           
+            return success == true ? Option.Account : Option.Start;
         }
     }
 }

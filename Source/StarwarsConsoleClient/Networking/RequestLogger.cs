@@ -51,16 +51,16 @@ namespace StarwarsConsoleClient.Networking
         }
         public void LogClientData(ClientResponseData data)
         {
-            Delimiter();
-            Append(data.TimeStamp);
-            Append($"{data.RequestMethod} {data.RequestUri}");
-            Append("Response Code: " + data.StatusCode);
-            Append("Response string: " + JsonFormat(data.ResponseContentString));
-            Append("Response Headers: " + _n + data.ResponseHeaders.ToString());
-            Append($"Request string: {JsonFormat(data.RequestContentString)}");
-            Append("Request Headers: " + JsonFormat(data.RequestHeaders));
-            Delimiter();
-            NewLines(2);
+            //Delimiter();
+            //Append(data.TimeStamp);
+            //Append($"{data.RequestMethod} {data.RequestUri}");
+            //Append("Response Code: " + data.StatusCode);
+            //Append("Response string: " + JsonFormat(data.ResponseContentString));
+            //Append("Response Headers: " + _n + data.ResponseHeaders.ToString());
+            //Append($"Request string: {JsonFormat(data.RequestContentString)}");
+            //Append("Request Headers: " + JsonFormat(data.RequestHeaders));
+            //Delimiter();
+            //NewLines(2);
         }
     }
 }

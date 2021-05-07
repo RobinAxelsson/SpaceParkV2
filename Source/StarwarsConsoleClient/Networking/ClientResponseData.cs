@@ -11,7 +11,7 @@ namespace StarwarsConsoleClient.Networking
     {
         public string TimeStamp { get; private set; }
         public string StatusCode { get; private set; }
-        public bool IsSuccessStatusCode { get; private set; }
+        public bool IsStatusCode { get; private set; }
         public HttpRequestHeaders RequestHeaders { get; private set; }
         public HttpResponseHeaders ResponseHeaders { get; private set; }
         public string RequestMethod { get; private set; }
@@ -45,7 +45,7 @@ namespace StarwarsConsoleClient.Networking
                     ResponseContentString = responseContentString,
                     RequestContentString = requestContentString,
                     ResponseHeaders = response.Headers,
-                    IsSuccessStatusCode = response.IsSuccessStatusCode,
+                    IsStatusCode = response.IsSuccessStatusCode
                 };
             }
             return clientResponseData;

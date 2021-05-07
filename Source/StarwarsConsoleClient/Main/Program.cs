@@ -1,6 +1,7 @@
 using StarwarsConsoleClient.Networking;
 using StarwarsConsoleClient.UI.Screens;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -13,11 +14,11 @@ namespace StarwarsConsoleClient.Main
     {
         public const ConsoleColor ForegroundColor = ConsoleColor.Green;
         private static readonly IntPtr ThisConsole = GetConsoleWindow();
-
+        public static readonly string LogUri = Path.GetTempPath() + "API-Client_LOG.txt";
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:5001/", Path.GetTempPath() + "API-Client_LOG.txt");
+            Client = new SpacePortApiClient(@"https://localhost:5001/", LogUri);
         }
         public static readonly SpacePortApiClient Client;
 
@@ -27,7 +28,6 @@ namespace StarwarsConsoleClient.Main
             Console.CursorVisible = false;
 
             var option = Option.Welcome;
-
             while (true)
                 switch (option)
                 {
@@ -40,7 +40,6 @@ namespace StarwarsConsoleClient.Main
                         break;
                     case Option.Login:
                         option = await Screen.Login();
-                        Client.OpenLogFile();
                         break;
                     case Option.Registration:
                         option = Screen.Registration();
