@@ -14,11 +14,12 @@ namespace StarwarsConsoleClient.Main
     {
         public const ConsoleColor ForegroundColor = ConsoleColor.Green;
         private static readonly IntPtr ThisConsole = GetConsoleWindow();
-        public static readonly string LogUri = Path.GetTempPath() + "API-Client_LOG.txt";
+
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:44350/", LogUri);
+            //UserData.BaseAPIUrl = "https://localhost:44350/";
+            Client = new SpacePortApiClient(UserData.BaseAPIUrl);
         }
         public static readonly SpacePortApiClient Client;
 
@@ -57,7 +58,7 @@ namespace StarwarsConsoleClient.Main
                         option = await Screen.HomePlanet();
                         break;
                     case Option.Receipts:
-                        option = Screen.Receipts();
+                        option = await Screen.Receipts();
                         break;
                     case Option.Exit:
                         Screen.Exit();

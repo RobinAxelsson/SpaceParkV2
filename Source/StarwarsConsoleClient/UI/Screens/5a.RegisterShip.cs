@@ -15,7 +15,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var lines = File.ReadAllLines(@"UI/maps/5a.RegisterShip.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
             var nextLine = drawables.Max(x => x.CoordinateY);
-            var ships = await Client.GetShipsAsync("https://localhost:44350/api/Account/Ships?maxLength=150");
+            var ships = await Client.GetShipsAsync(UserData.BaseAPIUrl + "/api/Account/Ships?maxLength=150");
             var shipLines = ships.Select(x => "$ " + x.Model).ToArray();
             drawables.AddRange(TextEditor.Add.DrawablesAt(shipLines, nextLine + 3));
             TextEditor.Center.ToScreen(drawables, Console.WindowWidth, Console.WindowHeight);
@@ -30,7 +30,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             if (reRegister)
             {
-                var status = await Client.ChangeSpaceShipAsync("https://localhost:44350/api/Account/ChangeSpaceShip?spaceshipModel=", ship.Model);
+                var status = await Client.ChangeSpaceShipAsync(UserData.BaseAPIUrl + "/api/Account/ChangeSpaceShip?spaceshipModel=", ship.Model);
                 return Option.Account;
             }
             

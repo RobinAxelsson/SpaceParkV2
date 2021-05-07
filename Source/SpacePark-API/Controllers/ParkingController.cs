@@ -49,13 +49,7 @@ namespace SpacePark_API.Controllers
             _repository.Add(receipt);
             _repository.SaveChanges();
 
-            return Ok(new { 
-                StartTime = receipt.StartTime,
-                EndTime = receipt.EndTime,
-                Price = receipt.Price,
-                SpacePort = receipt.SpacePort.Name,
-                PurchasedBy = account.Person.Name
-            });
+            return Ok(receipt);
         }
        
         [HttpGet]

@@ -5,14 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using StarwarsConsoleClient.Main;
+using System.Threading.Tasks;
+using static StarwarsConsoleClient.Main.Program;
 
 namespace StarwarsConsoleClient.UI.Screens
 {
     public static partial class Screen
     {
         private static Account _account = new Account();
-        public static Option Receipts()
+        public static async Task<Option> Receipts()
         {
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/7.Receipts.txt");
@@ -20,11 +21,11 @@ namespace StarwarsConsoleClient.UI.Screens
             TextEditor.Center.AllUnitsInXDir(drawables, Console.WindowWidth);
             ConsoleWriter.TryAppend(drawables);
             ConsoleWriter.Update();
-            var receipts = AccountManagement.GetAccountReceipts(_account);
+            var receipts = await Client.GetReceipts(UserData.BaseAPIUrl + "/api/Account/MyReceipts");
             
             var receiptStrings = new List<string[]>();
 
-            foreach (var receipt in receipts)
+            foreach (var receipt in receipts.ToList())
             {
                 var addReceiptList = new string[]
                 {

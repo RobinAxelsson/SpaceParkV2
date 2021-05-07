@@ -46,7 +46,7 @@ namespace StarwarsConsoleClient.UI.Screens
                 Console.Write(openNext.nextAvailable);
 
             LineTools.SetCursor(pricePerHourXY);
-            var pricePerHour = await Client.GetPriceAsync("https://localhost:44350/api/Parking/Price?spacePortName=" +
+            var pricePerHour = await Client.GetPriceAsync(UserData.BaseAPIUrl + "/api/Parking/Price?spacePortName=" +
                 UserData.SelectedSpacePort.name + "&spaceShipModel=" + UserData.SpaceShip.Model + "&minutes=60");
             Console.Write(Math.Round(pricePerHour, 2));
             //TODO placeholder 9999
@@ -58,7 +58,7 @@ namespace StarwarsConsoleClient.UI.Screens
 
             Option menuSel;
             double hours;
-            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => pricePerHour * x);
+            var timeGetter = new TimeGetter(enterHoursXY, calculatedPriceXY, 10000, x => (pricePerHour * x) / 60);
 
             if (openNext.isOpen == false)
             {
@@ -80,7 +80,7 @@ namespace StarwarsConsoleClient.UI.Screens
             {
                 ConsoleWriter.ClearScreen();
 
-                var receipt = ParkingManagement.SendInvoice(_account, hours);
+                var receipt = await Client.Park(UserData.BaseAPIUrl + "/api/Parking/Park", hours * 60, UserData.SelectedSpacePort.name);
                 var boxData = new BoxData((Console.WindowWidth/2 - 10, parkFromXY.CoordinateY));
                 boxData.Update(new[] { "Loading receipt..." });
 

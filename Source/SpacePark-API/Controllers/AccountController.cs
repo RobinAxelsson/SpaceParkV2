@@ -143,6 +143,22 @@ namespace SpacePark_API.Controllers
                 .Account.Person;
             return person;
         }
+        [Authorize]
+        [HttpPost]
+        [Route("api/[controller]/MyReceipts")]
+        public List<Receipt> GetReceipts()
+        {
+            var token = Request.Headers.FirstOrDefault(p => p.Key == "Authorization").Value.FirstOrDefault()?.Replace("Bearer ", "");
+            var account = _repository.UserTokens.Where(a => a.Token == token)
+                .Include(a => a.Account).SingleOrDefault()
+                .Account;
+            var receipts = _repository.Receipts.Where(r => r.Account == account)
+                .Include(a => a.Account)
+                .Include(p => p.Account.Person)
+                .Include(sp => sp.SpacePort)
+                .Include(ss => ss.Account.SpaceShip).ToList();
+            return receipts;
+        }
 
         [HttpGet]
         [Route("api/[controller]/Ships")]

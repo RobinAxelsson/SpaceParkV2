@@ -19,7 +19,7 @@ namespace StarwarsConsoleClient.UI
         private int MaxValue { get; }
         public decimal Price { get; set; }
         public double HoursSelected { get; set; }
-        private Func<double, decimal> Calculate { get; }
+        private Func<double, double> Calculate { get; }
 
         public double GetMinutes(SpaceShip ship)
         {
@@ -40,7 +40,7 @@ namespace StarwarsConsoleClient.UI
                 if (keyInfo.Key == ConsoleKey.UpArrow && hoursSelected <= MaxValue)
                 {
                     hoursSelected++;
-                    price = Math.Round(Calculate(hoursSelected), 2);
+                    price = Math.Round((decimal)Calculate(hoursSelected), 2);
                     Console.CursorVisible = false;
                     priceData.Update((price * 60).ToString());
                     Console.CursorVisible = true;
@@ -50,7 +50,7 @@ namespace StarwarsConsoleClient.UI
                 if (keyInfo.Key == ConsoleKey.DownArrow && hoursSelected != 0)
                 {
                     hoursSelected--;
-                    price = Math.Round(Calculate(hoursSelected), 2);
+                    price = Math.Round((decimal)Calculate(hoursSelected), 2);
                     Console.CursorVisible = false;
                     priceData.Update((price * 60).ToString());
                     Console.CursorVisible = true;

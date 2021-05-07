@@ -17,7 +17,7 @@ namespace StarwarsConsoleClient.Networking
     public partial class SpacePortApiClient
     {
         private HttpClient _client;
-        public SpacePortApiClient(string baseUrl, string logFile)
+        public SpacePortApiClient(string baseUrl)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(baseUrl);
@@ -159,14 +159,16 @@ namespace StarwarsConsoleClient.Networking
         }
         #endregion
         #region Parking Requests
-        public async Task<bool> Park(double minutes, int spacePortId)
+        public async Task<Receipt> Park(string uri, double minutes, string spacePortName)
         {
-            var response = await JsonPostRequestAsync(EndPoints.Parking.park, new
+            var response = await JsonPostRequestAsync(uri, new
             {
                 minutes,
-                spacePortId
+                spacePortName
             });
-            return response.IsSuccessStatusCode;
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var receipt = JsonConvert.DeserializeObject<Receipt>(responseContentString);
+            return receipt;
         }
         public async Task<IEnumerable<SpacePort>> GetSpacePortsAsync(string uri)
         {
@@ -184,6 +186,15 @@ namespace StarwarsConsoleClient.Networking
             var responseContentString = await response.Content.ReadAsStringAsync();
             var price = double.Parse(responseContentString);
             return price;
+        }
+        public async Task<IEnumerable<Receipt>> GetReceipts(string uri)
+        {
+            var response = await JsonPostRequestAsync(uri, new
+            {
+            });
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            var receipts = JsonConvert.DeserializeObject<IEnumerable<Receipt>>(responseContentString);
+            return receipts;
         }
         #endregion
     }

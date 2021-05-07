@@ -13,8 +13,8 @@ namespace StarwarsConsoleClient.UI.Screens
         {
             var myDataPromise = Client.MyDataAsync();
             var myShipPromise = Client.MySpaceShipAsync();
-            var myHomeworldPromise = Client.GetHomeworldAsync("https://localhost:44350/api/Account/GetHomeworld");
-            var myPortsPromise = Client.GetSpacePortsAsync("https://localhost:44350/api/Parking/GetSpacePorts");
+            var myHomeworldPromise = Client.GetHomeworldAsync(UserData.BaseAPIUrl + "/api/Account/GetHomeworld");
+            var myPortsPromise = Client.GetSpacePortsAsync(UserData.BaseAPIUrl + "/api/Parking/GetSpacePorts");
             ConsoleWriter.ClearScreen();
             var lines = File.ReadAllLines(@"UI/maps/6.Account.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
@@ -53,8 +53,9 @@ namespace StarwarsConsoleClient.UI.Screens
             LineTools.SetCursor(SpacePortCoord);
             if (UserData.SelectedSpacePort == null)
             {
-                UserData.SelectedSpacePort = portList.ToArray()[0];
-                Console.Write(UserData.SelectedSpacePort.name);
+                   UserData.SelectedSpacePort = portList.ToArray()[0];
+                        Console.Write(UserData.SelectedSpacePort.name);
+               
             }
             else
                 Console.Write(UserData.SelectedSpacePort.name);

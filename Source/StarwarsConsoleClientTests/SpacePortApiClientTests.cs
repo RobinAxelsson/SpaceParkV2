@@ -13,7 +13,7 @@ namespace StarwarsConsoleClientTests
 
         public SpacePortApiClientTests()
         {
-            Client = new SpacePortApiClient(@"https://localhost:5001/", Path.GetTempPath() + "API-Client_LOG.txt");
+            Client = new SpacePortApiClient(@"https://localhost:5001/");
         }
         [Fact]
         public async Task LoginDarthMaul()

@@ -11,7 +11,7 @@ namespace StarwarsConsoleClient.Main
         static TestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Client = new SpacePortApiClient(@"https://localhost:5001", Path.GetTempPath() + "API-Client_LOG.txt");
+            Client = new SpacePortApiClient(@"https://localhost:5001");
         }
         public static readonly SpacePortApiClient Client;
         public static (string accountName, string password) _namepass { get; set; }

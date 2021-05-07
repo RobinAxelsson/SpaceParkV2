@@ -15,7 +15,7 @@ namespace StarwarsConsoleClient.UI.Screens
             var lines = File.ReadAllLines(@"UI/maps/7.SelectSpacePort.txt");
             var drawables = TextEditor.Add.DrawablesAt(lines, 0);
             var nextLine = drawables.Max(x => x.CoordinateY);
-            var ports = await Client.GetSpacePortsAsync("https://localhost:44350/api/Parking/GetSpacePorts");
+            var ports = await Client.GetSpacePortsAsync(UserData.BaseAPIUrl + "/api/Parking/GetSpacePorts");
             var portLines = ports.Select(x => "$ " + x.name).ToArray();
             drawables.AddRange(TextEditor.Add.DrawablesAt(portLines, nextLine + 3));
             TextEditor.Center.ToScreen(drawables, Console.WindowWidth, Console.WindowHeight);
