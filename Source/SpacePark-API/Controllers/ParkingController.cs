@@ -64,6 +64,7 @@ namespace SpacePark_API.Controllers
                 return Conflict($"Spaceport with the name {spacePortName} is closed.");
             var checkAvailability = checkParkingStatus(spacePort);
             return Ok(checkAvailability);
+            //Ading random comment
         }
         [Authorize]
         [HttpPost]
