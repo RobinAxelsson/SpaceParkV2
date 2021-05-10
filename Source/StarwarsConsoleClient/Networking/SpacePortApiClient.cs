@@ -3,9 +3,6 @@ using StarwarsConsoleClient.Main;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -45,8 +42,8 @@ namespace StarwarsConsoleClient.Networking
             }
             public static class Admin
             {
-                public static readonly string Accounts =            @"​/api​/Admin/Accounts";
-                public static readonly string getAccount =          @"​/api​/Admin/Accounts";
+                public static readonly string Accounts =/*        */@"​/api​/Admin/Accounts";
+                public static readonly string getAccount =/*      */@"​/api​/Admin/Accounts";
                 public static readonly string getAccounts =         @"​/api​/Admin/GetAccount";
                 public static readonly string addSpacePort =        @"​/api​/Admin/AddSpacePort";
                 public static readonly string SpacePortEnabled =    @"​/api​/Admin/SpacePortEnabled";

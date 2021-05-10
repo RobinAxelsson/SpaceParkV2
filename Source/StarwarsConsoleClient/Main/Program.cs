@@ -1,9 +1,7 @@
 using StarwarsConsoleClient.Networking;
 using StarwarsConsoleClient.UI.Screens;
 using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,11 +16,10 @@ namespace StarwarsConsoleClient.Main
         static Program()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            //UserData.BaseAPIUrl = "https://localhost:44350/";
             Client = new SpacePortApiClient(UserData.BaseAPIUrl);
         }
         public static readonly SpacePortApiClient Client;
-
+        //Run postman/console app
         private static async Task Main(string[] args)
         {
             ShowWindow(ThisConsole, 3);

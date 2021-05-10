@@ -8,7 +8,7 @@
         public static string AccountName { get; set; }
         public static string tryFullName { get; set; }
         public static string Password { get; set; }
-        public static readonly string BaseAPIUrl = "https://localhost:44350";
+        public static readonly string BaseAPIUrl = "https://localhost:5001";
         public static void ClearData()
         {
             Person = null;

@@ -27,15 +27,18 @@ namespace SpacePark_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IStarwarsRepository, DbRepository>();
-            
-            if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt"))
+            var docker = false;
+
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt") && !docker)
                 services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\connection.txt")));
-            else
+            else if (!docker)
                 services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+            else
+                services.AddDbContext<StarwarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnection")));
+
 
             services.AddControllers();
 
-            // Adding Authentication  
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,7 +46,6 @@ namespace SpacePark_API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
 
-            // Adding Jwt Bearer  
             .AddJwtBearer(options =>
             {
                 options.SaveToken = true;

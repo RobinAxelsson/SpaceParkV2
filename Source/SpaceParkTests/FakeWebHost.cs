@@ -1,20 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using RestSharp;
-using SpacePark_API;
 using SpacePark_API.DataAccess;
-using System;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 
 namespace SpaceParkTests
 {
@@ -25,7 +17,6 @@ namespace SpaceParkTests
         private readonly string _dbName = "MockDB";
         public IConfiguration Configuration { get; private set; }
 
-        //[Obsolete("This property is obsolete. Use NewProperty instead.", true)]
         public new HttpClient CreateClient()
         {
             return base.CreateClient();
@@ -72,7 +63,5 @@ namespace SpaceParkTests
                 }
             });
         }
-
-        
     }
 }

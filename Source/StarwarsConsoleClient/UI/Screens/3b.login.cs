@@ -33,14 +33,7 @@ namespace StarwarsConsoleClient.UI.Screens
             Console.Write("Validating login...");
 
             bool success;
-            try
-            {
-                success = await Client.LoginAsync(accountName, password);
-            }
-            catch (Exception)
-            {
-                success = false;
-            }
+            success = await Client.LoginAsync(accountName, password);
            
             return success == true ? Option.Account : Option.Start;
         }

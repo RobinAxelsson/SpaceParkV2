@@ -34,7 +34,7 @@ namespace SpacePark_API.Controllers
                 .Account;
             if (account == null || spacePort == null)
                 return NotFound();
-            if (!checkParkingStatus(spacePort))
+            if (!checkParkingStatus(spacePort).isOpen)
                 return Conflict($"The Spaceport is currently full and will be available in");
 
             var price = spacePort.CalculatePrice(account.SpaceShip, model.Minutes);
@@ -64,7 +64,6 @@ namespace SpacePark_API.Controllers
                 return Conflict($"Spaceport with the name {spacePortName} is closed.");
             var checkAvailability = checkParkingStatus(spacePort);
             return Ok(checkAvailability);
-            //Ading random comment
         }
         [Authorize]
         [HttpPost]
@@ -83,6 +82,8 @@ namespace SpacePark_API.Controllers
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }
+        [HttpGet]
+        [Route("api/[controller]/ParkingStatus")]
         private (bool isOpen, DateTime nextAvailable) checkParkingStatus(SpacePort spacePort)
         {
 
