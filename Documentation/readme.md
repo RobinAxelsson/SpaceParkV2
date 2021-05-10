@@ -55,3 +55,8 @@ We use an in-memory-sql database (dependent on nu-get EntityFrameworkCore.InMemo
 A console application partly migrated from an SpacePark version 1.
 
 ![image](https://user-images.githubusercontent.com/63591629/117513008-0988a180-af91-11eb-8a78-a68ab4c97e91.png)
+
+# Attention: To Run the projects simultaneously in Visual Studio use following settings!
+![image](https://user-images.githubusercontent.com/63591629/117661026-20501380-b19e-11eb-931c-3e4d1da0f758.png)
+
+
