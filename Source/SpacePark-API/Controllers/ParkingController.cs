@@ -62,8 +62,8 @@ namespace SpacePark_API.Controllers
 
             if (!spacePort.Enabled)
                 return Conflict($"Spaceport with the name {spacePortName} is closed.");
-            bool isOpen = checkParkingStatus(spacePort);
-            return Ok(isOpen);
+            var checkAvailability = checkParkingStatus(spacePort);
+            return Ok(checkAvailability);
         }
         [Authorize]
         [HttpPost]
@@ -82,7 +82,7 @@ namespace SpacePark_API.Controllers
             var spaceShip = APICollector.ParseShipAsync(spaceShipModel);
             return spacePort.CalculatePrice(spaceShip, minutes);
         }
-        private bool checkParkingStatus(SpacePort spacePort)
+        private (bool isOpen, DateTime nextAvailable) checkParkingStatus(SpacePort spacePort)
         {
 
             var ongoingParkings = new List<Receipt>();
@@ -107,7 +107,7 @@ namespace SpacePark_API.Controllers
             {
                 isOpen = true;
             }
-            return isOpen;
+            return (isOpen, nextAvailable);
         }
 
     }
