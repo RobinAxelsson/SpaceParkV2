@@ -1,21 +1,28 @@
-# Documentation
+# Space Park V2 - SpaceX
 
-This is an Rest-API project that is based on the Star Wars Web API [swapi.dev/](https://swapi.dev/) and is used to for practicing Http-Requests, EF and ASP.NET web API.
+This is an Rest-API project that is based on the Star Wars Web API [swapi.dev/](https://swapi.dev/) and is used to for practicing Http-Requests, Entity Framework Core and ASP.NET web API.
 
 Authors: [Albin Alm,](https://github.com/albinalm) [Robin Axelsson](https://github.com/RobinAxelsson)
 
 ![image from the console client](https://user-images.githubusercontent.com/63591629/117513008-0988a180-af91-11eb-8a78-a68ab4c97e91.png)
 
-## [Project SpacePark-API](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/tree/main/Source/SpacePark-API)
+## .NET Projects overview
 
-This is the main project and contains code regarding:
+---
 
-- Data Models
-- DbContext
-- Controllers
-- Logic
+- [***SpacePark-API***](/Source/SpacePark-API) - main project ASP.NET web-api, contains:
+  - Data Models
+  - DbContext
+  - Controllers (Rest)
+  - Logic
+- [***StarwarsConsoleClient***](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/tree/main/Source/StarwarsConsoleClient) - A Console based frontend client that is migrated partly from V1
+- [***SpaceParkTests***](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/tree/main/Source/SpaceParkTests) - xunit test project, implements:
+  - in-memory-sql database (dependent on nu-get EntityFrameworkCore.InMemory)
+  -  mock web-host for testing the http-requests. See [MockWebHostFactory.cs](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/blob/main/Source/SpaceParkTests/MockWebHostFactory.cs)
 
-How we work ***Server side*** with token and identification, authorization, we have two roles - admin and user.
+## Server side authorization, token and roles code example
+
+---
 
 ```csharp
 if (account.Password != model.Password || account.AccountName != model.Username) return Unauthorized();
@@ -37,7 +44,9 @@ if (account.Password != model.Password || account.AccountName != model.Username)
             });
 ```
 
-And ***Client side***
+## Client side login code example
+
+---
 
 ```csharp
 public async Task<bool> LoginAsync(string accountName, string password)
@@ -55,16 +64,9 @@ _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bea
 }
 ```
 
-## [Poject: SpaceParkTests](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/tree/main/Source/SpaceParkTests)
-
-This is an x-unit project that do all the testing of the application.
-We use an in-memory-sql database (dependent on nu-get EntityFrameworkCore.InMemory) to run tests of the db-context and we also use an test-unique web-host for testing the http-requests. See [MockWebHostFactory.cs](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/blob/main/Source/SpaceParkTests/MockWebHostFactory.cs)
-
-## [Project: StarwarsConsoleClient](https://github.com/PGBSNH20/spaceparkv2-buddygroup6-renegades/tree/main/Source/StarwarsConsoleClient)
-
-A console application partly migrated from an SpacePark version 1.
-
 ## Set-up instructions
+
+---
 
 ***To Run the projects simultaneously in Visual Studio use following settings***
 
