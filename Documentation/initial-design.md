@@ -1,8 +1,4 @@
-# Documentation
-
-Use this file to fill in your documentation
-
-# Specifications overview
+# Initial Design Discussion
 
 Big company with several spaceports
 
@@ -25,8 +21,6 @@ Still exclusive, only star wars residence
 API-key with all requests (middleware), alternatively unique keys
 database in docker compose
 all documentation in file
-
-
 
 Users
     Visitor
@@ -62,7 +56,6 @@ Logic/DB
 
 Admin User
     Add new spaceport
-
 
 Get (Header with key):
 
